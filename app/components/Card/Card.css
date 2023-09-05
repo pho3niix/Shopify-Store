@@ -1,0 +1,77 @@
+.CardComponent {
+    display: flex;
+}
+
+.ItemImage {
+    display: flex;
+    justify-content: flex-end;
+    height: 70vh !important;
+}
+
+.CardLink {
+    position: sticky;
+    height: 90%;
+}
+
+.Image {
+    object-fit: fill;
+}
+
+.HoverButton {
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+    color: white;
+    transition: 0.5s;
+    opacity: 0;
+    position: absolute;
+}
+
+
+.ItemImage:hover .HoverButton {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.HoverButtonText {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ItemInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30vh;
+}
+
+.ItemPrices {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: center;
+    width: 100%;
+}
+
+/* O */
+.ItemPrices .ItemPrice:nth-of-type(1) {
+    color: black;
+}
+
+.ItemPrices .ItemPrice:nth-of-type(2) {
+    color: #C32F27;
+}
+
+.ItemDiscount {
+    color: #C5C5C5;
+    text-decoration: line-through 1px;
+    font-size: .85rem !important;
+}
+
+.CardLink {
+    text-decoration: none;
+
+    color: #fff;
+}

@@ -1,0 +1,84 @@
+.AppBar {
+  width: 100%;
+  height: 120px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px;
+}
+
+/* ------------------ */
+
+.ToolBar {
+  width: 100%;
+  height: 104px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ------------------ */
+
+.leftContainer {
+  width: 30%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  /* border: 1px solid white; */
+}
+
+/* ------------------ */
+.logoContainer {
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+
+  gap: 4px;
+
+  /* border: 1px solid white; */
+}
+
+/* ------------------ */
+
+.imgLogo {
+  width: 60px;
+  height: 85px;
+}
+
+/* ------------------ */
+.imgLogoText {
+  width: 140px;
+  height: 15px;
+}
+
+/* ------------------ */
+
+.rightContainer {
+  width: 30%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  /* border: 1px solid white; */
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  gap: 4px;
+}
+
+.NavLink {
+  text-decoration: none;
+
+  color: #fff;
+}

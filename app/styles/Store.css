@@ -1,0 +1,30 @@
+.main {
+    align-items: center;
+    display: flex;
+    width: 100%;
+    min-height: 75vh;
+}
+
+.list {
+    display: flex;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    width: 85%;
+    position: static;
+}
+
+.search {
+    width: 85%;
+}
+
+.PaginationComponent {
+    display: flex;
+    flex-direction: row !important;
+    width: 85%;
+    justify-content: center;
+}
+
+.PaginationElement {
+    width: 40%;
+    height: 4vh;
+}
