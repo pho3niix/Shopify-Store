@@ -11,18 +11,15 @@ export const meta = () => {
 };
 
 const Home = () => {
-
   const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay()])
 
   function ListImage(number) {
     let Images = [];
     for (let i = 0; i < number; i++) {
-      let source = `https://random.imagecdn.app/1600/1200?image=${i}`;
+      let source = `https://random.imagecdn.app/1800/1200?image=${i}`;
       Images.push(
         <Box
           className="embla__slide"
-          width={'100vw'}
-          height={'100%'}
           component="img"
           src={source}
           key={i}
@@ -36,7 +33,7 @@ const Home = () => {
     <Layout>
       <Stack className="embla" ref={emblaRef}>
         <div className="embla__container">
-          {ListImage(4)}
+          {ListImage(4)} 
         </div>
       </Stack>
     </Layout>
