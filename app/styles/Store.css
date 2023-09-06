@@ -28,3 +28,9 @@
     width: 40%;
     height: 4vh;
 }
+
+.DimensionTag {
+    display: flex;
+    justify-content: space-between;
+    color: darkgrey;
+}

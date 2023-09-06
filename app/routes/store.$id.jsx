@@ -8,36 +8,76 @@ import {
 
 const Store = () => {
 
+    const ProductData = {
+        nombre: 'Lámpara de diseño moderno',
+        precio_real: 150,
+        descuento: 20,
+        precio_final: 120,
+        imagenes: [],
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sagittis tellus nec tincidunt convallis. Ut consequat mi varius commodo scelerisque. Vestibulum egestas odio porta, tincidunt massa sed, scelerisque diam. Donec at sapien in enim gravida fermentum. Fusce consequat interdum auctor. Donec non pulvinar elit. Maecenas quis elit non ipsum dictum ultricies. Praesent venenatis magna in ligula dapibus, in maximus ex finibus. Nulla tincidunt lacus in erat tincidunt dapibus. Suspendisse et sem dictum, tincidunt urna eget, tempor justo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        dimensions: {
+            width: 0,
+            height: 0,
+            deep: 0
+        },
+        colors: ['#FF5733', '#3399FF', '#9633FF', '#FF33A2', '#FF3333']
+    }
+
+    function GetColors(colors = []) {
+        if (colors.length == 0) {
+            return (<p> No colors added.</p>)
+        } else {
+            return (
+                colors.map((item, index) => {
+                    return (
+                        <span key={index} style={{
+                            backgroundColor: item,
+                            width: '30px',
+                            height: '30px',
+                            listStyleType: 'none',
+                            borderRadius: '100%',
+                            marginRight: '5px',
+                            border: '1px solid black'
+                        }}></span>
+                    )
+                })
+            )
+        }
+    }
+
     const Image = `https://random.imagecdn.app/1200/340`
 
     function ListImage(number) {
         let Images = [];
-        console.log(Images)
         for (let i = 0; i < number; i++) {
             let source = `https://random.imagecdn.app/500/250?image=${i}`;
             if (i == 0) {
                 Images.push(
-                    <Box
-                        display={"flex"}
-                        direction={"row"}
-                        width={{ xs: "24%", sm: "24%", md: "24%" }}
+                    <Stack
                         marginRight={{ xs: "1%", sm: "1%", md: "1%" }}
-                        component="img"
-                        src={source}
-                        key={i}
-                    />
+                        maxHeight={'160px'}
+                    >
+                        <Box
+                            width={'100%'}
+                            component="img"
+                            src={source}
+                            key={i}
+                        />
+                    </Stack>
                 )
             } else {
                 Images.push(
-                    <Box
-                        display={"flex"}
-                        direction={"row"}
-                        width={{ xs: "24%", sm: "24%", md: "24%" }}
-                        component="img"
+                    <Stack
                         marginLeft={{ xs: "1%", sm: "1%", md: "1%" }}
-                        src={source}
-                        key={i}
-                    />
+                        maxHeight={'160px'}
+                    >
+                        <Box
+                            width={'100%'}
+                            component="img"
+                            src={source}
+                            key={i}
+                        />
+                    </Stack>
                 )
             }
         }
@@ -54,7 +94,9 @@ const Store = () => {
             >
                 <Stack
                     display={"flex"}
+                    height={'100%'}
                     direction={"column"}
+                    justifyContent={'space-between'}
                     sx={{
                         width: 1200,
                         marginLeft: 4
@@ -73,8 +115,11 @@ const Store = () => {
                     </Box>
                     <Stack
                         display={"flex"}
-                        height={"20vh"}
                         direction={"row"}
+                        height={"20vh"}
+                        justifyContent={'space-between'}
+                        className="ImagesList"
+                        marginTop={'2vh'}
                     >
                         {ListImage(4)}
                     </Stack>
@@ -106,7 +151,7 @@ const Store = () => {
                             >
                                 <Typography
                                     fontSize={25}
-                                >Nombre</Typography>
+                                >{ProductData.nombre}</Typography>
                             </Stack>
                             <Stack
                                 display={"flex"}
@@ -117,34 +162,37 @@ const Store = () => {
                             >
                                 <Typography
                                     sx={{
-                                        marginRight: 1
+                                        marginRight: 1,
+                                        textDecoration: 'line-through'
                                     }}
                                 >
-                                    $100 MXN
+                                    ${ProductData.precio_real} MXN
                                 </Typography>
                                 <Typography
                                     sx={{
                                         marginLeft: 1,
                                         marginRight: 1
                                     }}
+                                    color={"red"}
                                 >
-                                    -10%
+                                    -{ProductData.descuento}%
                                 </Typography>
 
                                 <Typography
+                                    color={"red"}
                                 >
-                                    $110 MXN
+                                    ${ProductData.precio_final} MXN
                                 </Typography>
                             </Stack>
                         </Stack>
                         <Stack
                             display={"flex"}
                             direction={"row"}
+                            alignItems={"center"}
                             marginLeft={2}
                             sx={{
-                                height: 80
+                                height: 60
                             }}
-                            bgcolor={"gray"}
                         >
                             <Stack
                                 marginRight={2}
@@ -155,10 +203,7 @@ const Store = () => {
                                 display={"flex"}
                                 direction={"row"}
                             >
-                                <Typography>azul</Typography>
-                                <Typography>negro</Typography>
-                                <Typography>verde</Typography>
-                                <Typography>morado</Typography>
+                                {GetColors(ProductData.colors)}
                             </Stack>
                         </Stack>
                         <Stack
@@ -167,28 +212,67 @@ const Store = () => {
                             sx={{
                                 height: 120
                             }}
-                            bgcolor={"purple"}
                             marginLeft={2}
                         >
-                            <Typography>Dimensiones</Typography>
-                            <Typography>Description</Typography>
-                            <Typography>Description</Typography>
-                            <Typography>Description</Typography>
+                            <Typography>Dimensiones:</Typography>
+                            <Stack
+                                display={'flex'}
+                                alignSelf={'center'}
+                                width={'90%'}
+                                height={'100%'}
+                            >
+                                <Typography className="DimensionTag"><span>Alto:</span> <span>{ProductData.dimensions.height} cm</span></Typography>
+                                <Typography className="DimensionTag"><span>Ancho:</span> <span>{ProductData.dimensions.width} cm</span></Typography>
+                                <Typography className="DimensionTag"><span>Profundo:</span> <span>{ProductData.dimensions.deep} cm</span></Typography>
+                            </Stack>
                         </Stack>
                         <Stack
                             marginLeft={2}
+                            width={'100%'}
+                            sx={{
+                                overflow: 'scroll'
+                            }}
                         >
-                            <Typography>Description</Typography>
+                            <Typography>Descripción:</Typography>
+                            <Typography sx={{ color: 'darkgrey' }}>{ProductData.description}</Typography>
                         </Stack>
                     </Stack>
                     <Stack
                         display={"flex"}
                         direction={"column"}
                         height={"20vh"}
-                        bgcolor={"brown"}
+                        justifyContent={'start'}
                     >
-                        <Stack>Comprar ahora</Stack>
-                        <Stack>Añadir al carrito</Stack>
+                        <Stack
+                            display={'flex'}
+                            justifyContent={'center'}
+                            width={'100%'}
+                            height={'40%'}
+                            bgcolor={'black'}
+                            alignItems={'center'}
+                        >
+                            <Typography
+                                color={'white'}
+                            >
+                                Comprar Ahora
+                            </Typography>
+                        </Stack>
+                        <Stack
+                            marginTop={2}
+                            display={'flex'}
+                            justifyContent={'center'}
+                            width={'100%'}
+                            height={'40%'}
+                            bgcolor={'white'}
+                            alignItems={'center'}
+                            border={'1px solid black'}
+                        >
+                            <Typography
+                                color={'black'}
+                            >
+                                Añadir al carrito
+                            </Typography>
+                        </Stack>
                     </Stack>
                 </Stack>
             </Stack>
