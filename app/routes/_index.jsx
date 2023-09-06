@@ -2,44 +2,43 @@ import React from "react";
 import NavBar from "../components/NavBar/NavBar";
 import Footer from "../components/Footer/Footer";
 import Layout from "../components/Layout/Layout";
+import { Stack, Box } from "@mui/material";
+import useEmblaCarousel from 'embla-carousel-react'
+import Autoplay from 'embla-carousel-autoplay'
 
 export const meta = () => {
   return [{ title: 'Inicio' }];
 };
 
 const Home = () => {
+
+  const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay()])
+
+  function ListImage(number) {
+    let Images = [];
+    for (let i = 0; i < number; i++) {
+      let source = `https://random.imagecdn.app/1600/1200?image=${i}`;
+      Images.push(
+        <Box
+          className="embla__slide"
+          width={'100vw'}
+          height={'100%'}
+          component="img"
+          src={source}
+          key={i}
+        />
+      )
+    }
+    return (Images)
+  }
+
   return (
     <Layout>
-      <h1>1</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>Home</h1>
-      <h1>5</h1>
+      <Stack className="embla" ref={emblaRef}>
+        <div className="embla__container">
+          {ListImage(4)}
+        </div>
+      </Stack>
     </Layout>
   );
 };
