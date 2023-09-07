@@ -32,5 +32,13 @@
 .DimensionTag {
     display: flex;
     justify-content: space-between;
-    color: darkgrey;
+    color: #939393;
+}
+
+.DimensionTag span {
+    font-size: 17px;
+}
+
+.PriceTag {
+    font-size: 18px !important;
 }

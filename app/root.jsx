@@ -61,6 +61,10 @@ export function links() {
       rel: 'preconnect',
       href: 'https://fonts.gstatic.com'
     },
+    {
+      rel: 'stylesheet',
+      href: 'http://fast.fonts.net/t/1.css?apiType=css&projectid=7ba9e0a7-abe8-437c-a682-27fa19a01908'
+    },
     { rel: 'icon', type: 'image/svg+xml', href: favicon },
   ];
 }

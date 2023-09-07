@@ -6,6 +6,10 @@ import {
     Typography
 } from '@mui/material'
 
+export const meta = () => {
+    return [{ title: 'Detalle de servicio' }];
+};
+
 const Store = () => {
 
     const ProductData = {
@@ -121,7 +125,7 @@ const Store = () => {
                         className="ImagesList"
                         marginTop={'2vh'}
                     >
-                        {ListImage(4)}
+                        {ListImage(3)}
                     </Stack>
                 </Stack>
                 <Stack
@@ -151,7 +155,7 @@ const Store = () => {
                             >
                                 <Typography
                                     fontSize={25}
-                                >{ProductData.nombre}</Typography>
+                                >{ProductData.nombre.toUpperCase()}</Typography>
                             </Stack>
                             <Stack
                                 display={"flex"}
@@ -161,6 +165,7 @@ const Store = () => {
                                 marginLeft={2}
                             >
                                 <Typography
+                                    className="PriceTag"
                                     sx={{
                                         marginRight: 1,
                                         textDecoration: 'line-through'
@@ -169,6 +174,7 @@ const Store = () => {
                                     ${ProductData.precio_real} MXN
                                 </Typography>
                                 <Typography
+                                    className="PriceTag"
                                     sx={{
                                         marginLeft: 1,
                                         marginRight: 1
@@ -177,8 +183,8 @@ const Store = () => {
                                 >
                                     -{ProductData.descuento}%
                                 </Typography>
-
                                 <Typography
+                                    className="PriceTag"
                                     color={"red"}
                                 >
                                     ${ProductData.precio_final} MXN
@@ -197,7 +203,7 @@ const Store = () => {
                             <Stack
                                 marginRight={2}
                             >
-                                <Typography>Colores:</Typography>
+                                <Typography fontSize={'25px'}>Colores:</Typography>
                             </Stack>
                             <Stack
                                 display={"flex"}
@@ -214,7 +220,9 @@ const Store = () => {
                             }}
                             marginLeft={2}
                         >
-                            <Typography>Dimensiones:</Typography>
+                            <Typography
+                                fontSize={'25px'}
+                            >Dimensiones:</Typography>
                             <Stack
                                 display={'flex'}
                                 alignSelf={'center'}
@@ -233,8 +241,12 @@ const Store = () => {
                                 overflow: 'scroll'
                             }}
                         >
-                            <Typography>Descripción:</Typography>
-                            <Typography sx={{ color: 'darkgrey' }}>{ProductData.description}</Typography>
+                            <Typography
+                                fontSize={'25px'}
+                            >Descripción:</Typography>
+                            <Typography
+                                fontSize={17}
+                                sx={{ color: '#939393' }}>{ProductData.description}</Typography>
                         </Stack>
                     </Stack>
                     <Stack

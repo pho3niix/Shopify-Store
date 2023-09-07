@@ -13,7 +13,7 @@ export const theme = createTheme({
       main: "#202123",
     },
   },
-  // typography: {
-  //   fontFamily: "Nunito Sans",
-  // },
+  typography: {
+    fontFamily: "Avenir",
+  },
 });
