@@ -21,7 +21,11 @@ const Home = () => {
         <Box
           className="embla__slide"
           component="img"
-          src={source}
+          sx={{
+            backgroundImage: `url(${source})`,
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat'
+          }}
           key={i}
         />
       )
@@ -33,7 +37,7 @@ const Home = () => {
     <Layout>
       <Stack className="embla" ref={emblaRef}>
         <div className="embla__container">
-          {ListImage(4)} 
+          {ListImage(4)}
         </div>
       </Stack>
     </Layout>
