@@ -170,6 +170,7 @@ const Store = () => {
                                         marginRight: 1,
                                         textDecoration: 'line-through'
                                     }}
+                                    color={'#c5c5c5'}
                                 >
                                     ${ProductData.precio_real} MXN
                                 </Typography>
@@ -179,13 +180,13 @@ const Store = () => {
                                         marginLeft: 1,
                                         marginRight: 1
                                     }}
-                                    color={"red"}
+                                    color={"#c32f27"}
                                 >
                                     -{ProductData.descuento}%
                                 </Typography>
                                 <Typography
                                     className="PriceTag"
-                                    color={"red"}
+                                    color={"#c32f27"}
                                 >
                                     ${ProductData.precio_final} MXN
                                 </Typography>
