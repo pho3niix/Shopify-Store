@@ -6,7 +6,7 @@ import {
     Typography
 } from '@mui/material'
 
-export const meta = () => {
+export const meta = ({ data }) => {
     return [{ title: 'Detalle de servicio' }];
 };
 
@@ -93,7 +93,7 @@ const Store = () => {
             <Stack
                 display={"flex"}
                 direction={"row"}
-                width={"90%"}
+                width={"80%"}
                 height={"75vh"}
             >
                 <Stack
