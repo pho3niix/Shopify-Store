@@ -6,9 +6,7 @@ import {
     TextField,
     Pagination
 } from '@mui/material';
-import { Suspense } from 'react';
 import { defer, redirec, json } from '@shopify/remix-oxygen';
-import { getSelectedProductOptions } from '@shopify/hydrogen'
 import { Await, Link, useLoaderData } from '@remix-run/react';
 
 export const meta = () => {
@@ -23,9 +21,7 @@ export async function loader({
     const { handle } = params;
     const { storefront } = context;
 
-    const query = await storefront.query(PRODUCT_QUERY, {
-        variables: { handle }
-    });
+    const query = await storefront.query(PRODUCT_QUERY);
 
     return json({
         data: query
@@ -40,12 +36,15 @@ const Store = () => {
 
     function List() {
         if (Items.length > 0) {
+            let RawId = 'gid://shopify/Product/8668259647769'
+            let ClearID = RawId.substring(RawId.lastIndexOf('/') + 1, RawId.length)
+            
             return (
                 Items.map((e, i) => {
                     e = {
                         ...e,
                         image: e.images.nodes[0].url,
-                        id: i + 1,
+                        id: ClearID,
                         nombre: e.title,
                         precio_final: e.priceRange.maxVariantPrice.amount,
                         precio_real: e.compareAtPriceRange.maxVariantPrice.amount,
@@ -119,6 +118,7 @@ const PRODUCT_QUERY = `#graphql
 query {
     products(first: 10) {
       nodes {
+        id
         title
         images(first: 10) {
           nodes {

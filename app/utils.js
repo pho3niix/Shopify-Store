@@ -1,8 +1,8 @@
-import {useLocation} from '@remix-run/react';
-import {useMemo} from 'react';
+import { useLocation } from '@remix-run/react';
+import { useMemo } from 'react';
 
 export function useVariantUrl(handle, selectedOptions) {
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
   return useMemo(() => {
     return getVariantUrl({
@@ -34,4 +34,8 @@ export function getVariantUrl({
   const searchString = searchParams.toString();
 
   return path + (searchString ? '?' + searchParams.toString() : '');
+}
+
+export function GetDiscount(real, final) {
+  return Math.floor(((real - final) / real) * 100)
 }

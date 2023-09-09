@@ -5,27 +5,78 @@ import {
     Box,
     Typography
 } from '@mui/material'
+import { useParams } from "react-router-dom";
+import { useLoaderData } from '@remix-run/react'
+import { defer, redirec, json } from '@shopify/remix-oxygen';
+import { GetDiscount } from '../utils'
 
 export const meta = ({ data }) => {
     return [{ title: 'Detalle de servicio' }];
 };
 
+export async function loader({
+    params,
+    request,
+    context
+}) {
+    const { id } = params;
+    const { storefront } = context;
+
+    let RawId = "gid://shopify/Product/" + id
+
+    const query = await storefront.query(PRODUCT_QUERY, {
+        variables: {
+            ProductId: RawId
+        }
+    });
+
+    return json({
+        data: query
+    })
+}
+
+function ClearVariants(data) {
+    const uniqueColors = new Set();
+    const uniqueSizes = new Set();
+
+    data.forEach((item) => {
+        const [Color, Size] = item.title.split('/').map((part) => part.trim());
+        uniqueColors.add(Color);
+        uniqueSizes.add(Size);
+    });
+
+    return {
+        Colors: Array.from(uniqueColors),
+        Sizes: Array.from(uniqueSizes),
+    };
+}
+
+function ClearProduct(data) {
+    const { Colors, Sizes } = ClearVariants(data.variants.nodes);
+    return {
+        nombre: data.title,
+        precio_real: data.compareAtPriceRange.maxVariantPrice.amount,
+        descuento: GetDiscount(data.compareAtPriceRange.maxVariantPrice.amount, data.priceRange.maxVariantPrice.amount),
+        precio_final: data.priceRange.maxVariantPrice.amount,
+        imagenes: data.images.nodes.map(e => e.url),
+        description: data.description,
+        dimensions: {
+            width: Sizes[0],
+            height: Sizes[1],
+            deep: Sizes[2]
+        },
+        colors: Colors
+    }
+}
+
 const Store = () => {
 
-    const ProductData = {
-        nombre: 'Lámpara de diseño moderno',
-        precio_real: 150,
-        descuento: 20,
-        precio_final: 120,
-        imagenes: [],
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sagittis tellus nec tincidunt convallis. Ut consequat mi varius commodo scelerisque. Vestibulum egestas odio porta, tincidunt massa sed, scelerisque diam. Donec at sapien in enim gravida fermentum. Fusce consequat interdum auctor. Donec non pulvinar elit. Maecenas quis elit non ipsum dictum ultricies. Praesent venenatis magna in ligula dapibus, in maximus ex finibus. Nulla tincidunt lacus in erat tincidunt dapibus. Suspendisse et sem dictum, tincidunt urna eget, tempor justo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        dimensions: {
-            width: 0,
-            height: 0,
-            deep: 0
-        },
-        colors: ['#FF5733', '#3399FF', '#9633FF', '#FF33A2', '#FF3333']
-    }
+    const { data } = useLoaderData();
+
+    // console.log(data.product);
+    const Product = data.product;
+
+    const ProductData = ClearProduct(Product)
 
     function GetColors(colors = []) {
         if (colors.length == 0) {
@@ -34,7 +85,7 @@ const Store = () => {
             return (
                 colors.map((item, index) => {
                     return (
-                        <span key={index} style={{
+                        <span style={{
                             backgroundColor: item,
                             width: '30px',
                             height: '30px',
@@ -42,21 +93,24 @@ const Store = () => {
                             borderRadius: '100%',
                             marginRight: '5px',
                             border: '1px solid black'
-                        }}></span>
+                        }}
+                            key={index}
+                        ></span>
                     )
                 })
             )
         }
     }
 
-    const Image = `https://random.imagecdn.app/1200/340`
+    const Image = ProductData.imagenes[0]
 
-    function ListImage(number) {
-        let Images = [];
-        for (let i = 0; i < number; i++) {
-            let source = `https://random.imagecdn.app/500/250?image=${i}`;
-            if (i == 0) {
-                Images.push(
+    function ListImage(images = []) {
+        let Containers = [];
+
+        for (let i = 1; i < images.length; i++) {
+            let source = images[i];
+            if (i == 1) {
+                Containers.push(
                     <Stack
                         marginRight={{ xs: "1%", sm: "1%", md: "1%" }}
                         maxHeight={'160px'}
@@ -70,7 +124,7 @@ const Store = () => {
                     </Stack>
                 )
             } else {
-                Images.push(
+                Containers.push(
                     <Stack
                         marginLeft={{ xs: "1%", sm: "1%", md: "1%" }}
                         maxHeight={'160px'}
@@ -85,7 +139,8 @@ const Store = () => {
                 )
             }
         }
-        return (Images)
+
+        return (Containers);
     }
 
     return (
@@ -125,7 +180,7 @@ const Store = () => {
                         className="ImagesList"
                         marginTop={'2vh'}
                     >
-                        {ListImage(3)}
+                        {ListImage(ProductData.imagenes)}
                     </Stack>
                 </Stack>
                 <Stack
@@ -294,3 +349,34 @@ const Store = () => {
 };
 
 export default Store;
+
+
+const PRODUCT_QUERY = `#graphql
+query GetProductsById($ProductId: ID!) {
+    product(id: $ProductId) {
+      id
+      title
+      description
+      images(first: 10) {
+        nodes {
+          url
+        }
+      }
+      compareAtPriceRange{
+          maxVariantPrice{
+            amount
+          }
+        }
+        priceRange{
+          maxVariantPrice{
+            amount
+          }
+        }
+        variants(first: 10) {
+          nodes {
+            title
+          }
+        }
+    }
+  }
+`;
