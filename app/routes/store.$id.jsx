@@ -107,7 +107,7 @@ const Store = () => {
     function ListImage(images = []) {
         let Containers = [];
 
-        for (let i = 1; i < images.length; i++) {
+        for (let i = 1; i < 4; i++) {
             let source = images[i];
             if (i == 1) {
                 Containers.push(
