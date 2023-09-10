@@ -12,11 +12,13 @@ import {
   List,
   ListItemText,
   ListItemButton,
+  Badge,
 } from '@mui/material';
 import logo from '../../assets/ob_logo.png';
 import logo_text from '../../assets/ob_logo_text.png';
 import SideMenu from './DrawerMenu';
 import {Link} from 'react-router-dom';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const NavBar = () => {
   return (
@@ -65,6 +67,11 @@ const NavBar = () => {
               <Link to="/contact" className="NavLink">
                 <Typography>Contacto</Typography>
               </Link>
+            </ListItemButton>
+            <ListItemButton sx={{justifyContent: 'center'}}>
+              <Badge badgeContent={4} color="shoppingCar">
+                <ShoppingCartIcon sx={{color: 'white'}} />
+              </Badge>
             </ListItemButton>
           </List>
         </Stack>
