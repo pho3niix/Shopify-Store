@@ -35,7 +35,7 @@ export default {
       /**
        * Create Hydrogen's Storefront client.
        */
-      const {storefront} = createStorefrontClient({
+      const { storefront } = createStorefrontClient({
         cache,
         waitUntil,
         i18n: getLocaleFromRequest(request),
@@ -53,7 +53,9 @@ export default {
       const cart = createCartHandler({
         storefront,
         getCartId: cartGetIdDefault(request.headers),
-        setCartId: cartSetIdDefault(),
+        setCartId: cartSetIdDefault({
+          maxage: 60 * 60 * 24 * 365, // 1 year expiry
+        }),
         cartQueryFragment: CART_QUERY_FRAGMENT,
       });
 
@@ -64,7 +66,13 @@ export default {
       const handleRequest = createRequestHandler({
         build: remixBuild,
         mode: process.env.NODE_ENV,
-        getLoadContext: () => ({session, storefront, env, cart}),
+        getLoadContext: () => ({
+          session,
+          waitUntil,
+          storefront,
+          env,
+          cart,
+        }),
       });
 
       const response = await handleRequest(request);
@@ -75,14 +83,14 @@ export default {
          * If the redirect doesn't exist, then `storefrontRedirect`
          * will pass through the 404 response.
          */
-        return storefrontRedirect({request, response, storefront});
+        return storefrontRedirect({ request, response, storefront });
       }
 
       return response;
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
-      return new Response('An unexpected error occurred', {status: 500});
+      return new Response('An unexpected error occurred', { status: 500 });
     }
   },
 };
@@ -249,7 +257,7 @@ const CART_QUERY_FRAGMENT = `#graphql
 `;
 
 function getLocaleFromRequest(request) {
-  const defaultLocale = {language: 'EN', country: 'US'};
+  const defaultLocale = { language: 'EN', country: 'US' };
   const supportedLocales = {
     ES: 'ES',
     FR: 'FR',
@@ -259,6 +267,6 @@ function getLocaleFromRequest(request) {
   const url = new URL(request.url);
   const firstSubdomain = url.hostname.split('.')[0]?.toUpperCase();
   return supportedLocales[firstSubdomain]
-    ? {language: supportedLocales[firstSubdomain], country: firstSubdomain}
+    ? { language: supportedLocales[firstSubdomain], country: firstSubdomain }
     : defaultLocale;
 }

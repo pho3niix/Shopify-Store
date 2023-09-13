@@ -5,13 +5,14 @@ import {
     Box,
     Typography
 } from '@mui/material'
-import { useParams } from "react-router-dom";
 import { useLoaderData } from '@remix-run/react'
-import { defer, redirec, json } from '@shopify/remix-oxygen';
-import { GetDiscount } from '../utils'
+import { json } from '@shopify/remix-oxygen';
+import { GetDiscount } from '../utils';
+import { CartForm } from '@shopify/hydrogen';
+import { MediaFile, Money, ShopPayButton } from '@shopify/hydrogen-react';
 
 export const meta = ({ data }) => {
-    return [{ title: 'Detalle de servicio' }];
+    return [{ title: `Tienda | ${data.product.title}` }];
 };
 
 export async function loader({
@@ -22,38 +23,54 @@ export async function loader({
     const { id } = params;
     const { storefront } = context;
 
+    // const storeDomain = storefront.getShopifyDomain();
+
     let RawId = "gid://shopify/Product/" + id
 
-    const query = await storefront.query(PRODUCT_QUERY, {
+    const { product } = await storefront.query(PRODUCT_QUERY, {
         variables: {
             ProductId: RawId
         }
     });
 
+    if (!product?.id) {
+        throw new Response(null, { status: 404 });
+    }
+
     return json({
-        data: query
+        product,
+        // storeDomain
     })
 }
 
-function ClearVariants(data) {
-    const uniqueColors = new Set();
-    const uniqueSizes = new Set();
+function ProductForm({ productId }) {
+    const lines = [{ merchandiseId: productId, quantity: 1 }];
+    return (
+        <CartForm
+            route="/cart"
+            action={CartForm.ACTIONS.LinesAdd}
+            inputs={
+                { lines }
+            }
+        >
+            <button type="submit" className="AddToCart">
+                Agregar al carrito
+            </button>
+        </CartForm>
+    );
+}
 
-    data.forEach((item) => {
-        const [Color, Size] = item.title.split('/').map((part) => part.trim());
-        uniqueColors.add(Color);
-        uniqueSizes.add(Size);
-    });
-
+function ClearVariants(colors, dimensions) {
     return {
-        Colors: Array.from(uniqueColors),
-        Sizes: Array.from(uniqueSizes),
+        Colors: JSON.parse(colors),
+        Sizes: JSON.parse(dimensions),
     };
 }
 
 function ClearProduct(data) {
-    const { Colors, Sizes } = ClearVariants(data.variants.nodes);
+    const { Colors, Sizes } = ClearVariants(data.colors.value, data.dimensions.value);
     return {
+        id: data.id,
         nombre: data.title,
         precio_real: data.compareAtPriceRange.maxVariantPrice.amount,
         descuento: GetDiscount(data.compareAtPriceRange.maxVariantPrice.amount, data.priceRange.maxVariantPrice.amount),
@@ -71,12 +88,13 @@ function ClearProduct(data) {
 
 const Store = () => {
 
-    const { data } = useLoaderData();
+    const { product, storeDomain } = useLoaderData();
 
-    // console.log(data.product);
-    const Product = data.product;
+    // const Orderable = product.availableForSale;
 
-    const ProductData = ClearProduct(Product)
+    const Variants = product.variants.nodes[0];
+
+    const ProductData = ClearProduct(product);
 
     function GetColors(colors = []) {
         if (colors.length == 0) {
@@ -335,11 +353,7 @@ const Store = () => {
                             alignItems={'center'}
                             border={'1px solid black'}
                         >
-                            <Typography
-                                color={'black'}
-                            >
-                                Añadir al carrito
-                            </Typography>
+                            <ProductForm productId={Variants?.id} />
                         </Stack>
                     </Stack>
                 </Stack>
@@ -362,21 +376,44 @@ query GetProductsById($ProductId: ID!) {
           url
         }
       }
-      compareAtPriceRange{
-          maxVariantPrice{
+      compareAtPriceRange {
+        maxVariantPrice {
+          amount
+        }
+      }
+      priceRange {
+        maxVariantPrice {
+          amount
+        }
+      }
+      colors: metafield(namespace: "details", key: "colores") {
+        value
+        key
+      }
+      dimensions: metafield(namespace: "details", key: "dimensiones") {
+        value
+        key
+      }
+      availableForSale
+      variants(first: 1) {
+        nodes {
+          id
+          title
+          availableForSale
+          price {
+            currencyCode
             amount
           }
-        }
-        priceRange{
-          maxVariantPrice{
+          compareAtPrice {
+            currencyCode
             amount
           }
-        }
-        variants(first: 10) {
-          nodes {
-            title
+          selectedOptions {
+            name
+            value
           }
         }
+      }
     }
   }
 `;

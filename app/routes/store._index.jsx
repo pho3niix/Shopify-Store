@@ -36,11 +36,10 @@ const Store = () => {
 
     function List() {
         if (Items.length > 0) {
-            let RawId = 'gid://shopify/Product/8668259647769'
-            let ClearID = RawId.substring(RawId.lastIndexOf('/') + 1, RawId.length)
-            
             return (
                 Items.map((e, i) => {
+                    let RawId = e.id;
+                    let ClearID = RawId.substring(RawId.lastIndexOf('/') + 1, RawId.length)
                     e = {
                         ...e,
                         image: e.images.nodes[0].url,
