@@ -1,8 +1,8 @@
-import { Link, useLoaderData } from '@remix-run/react';
+// import { Link, useLoaderData } from '@remix-run/react';
 import { json } from '@shopify/remix-oxygen';
 import { CartForm } from '@shopify/hydrogen';
-import { CartLineItems, CartActions, CartSummary } from '~/components/ShoppingCart/ShoppingCart';
-import Layout from "../components/Layout/Layout";
+// import { CartLineItems, CartActions, CartSummary } from '~/components/ShoppingCart/ShoppingCart';
+// import Layout from "../components/Layout/Layout";
 
 export async function action({ request, context }) {
     const { cart } = context;
@@ -35,46 +35,46 @@ export async function action({ request, context }) {
     );
 }
 
-export async function loader({ context }) {
-    const { cart } = context;
-    return json({
-        cart: await cart.get()
-    });
-}
+// export async function loader({ context }) {
+//     const { cart } = context;
+//     return json({
+//         cart: await cart.get()
+//     });
+// }
 
-function EmptyCart(cart) {
-    if (cart.totalQuantity > 0) {
-        return (
-            <div className="w-full max-w-6xl mx-auto pb-12 grid md:grid-cols-2 md:items-start gap-8 md:gap-8 lg:gap-12">
-                <div className="flex-grow md:translate-y-4">
-                    <CartLineItems linesObj={cart.lines} />
-                </div>
-                <div className="fixed left-0 right-0 bottom-0 md:sticky md:top-[65px] grid gap-6 p-4 md:px-6 md:translate-y-4 bg-gray-100 rounded-md w-full">
-                    <CartSummary cost={cart.cost} />
-                    <CartActions checkoutUrl={cart.checkoutUrl} />
-                </div>
-            </div>
-        );
-    } else {
-        <h2 className="whitespace-pre-wrap max-w-prose font-bold text-4xl">
-            Your cart is empty
-        </h2>
-    }
-}
+// function EmptyCart(cart) {
+//     if (cart.totalQuantity > 0) {
+//         return (
+//             <div className="w-full max-w-6xl mx-auto pb-12 grid md:grid-cols-2 md:items-start gap-8 md:gap-8 lg:gap-12">
+//                 <div className="flex-grow md:translate-y-4">
+//                     <CartLineItems linesObj={cart.lines} />
+//                 </div>
+//                 <div className="fixed left-0 right-0 bottom-0 md:sticky md:top-[65px] grid gap-6 p-4 md:px-6 md:translate-y-4 bg-gray-100 rounded-md w-full">
+//                     <CartSummary cost={cart.cost} />
+//                     <CartActions checkoutUrl={cart.checkoutUrl} />
+//                 </div>
+//             </div>
+//         );
+//     } else {
+//         <h2 className="whitespace-pre-wrap max-w-prose font-bold text-4xl">
+//             Your cart is empty
+//         </h2>
+//     }
+// }
 
-export default function Cart() {
-    const { cart } = useLoaderData();
-    return (
-        <Layout>
-            <div className="flex flex-col space-y-7 justify-center items-center md:py-8 md:px-12 px-4 py-6 h-screen">
-                {EmptyCart(cart)}
-                <Link
-                    to="/store"
-                    className="inline-block rounded-sm font-medium text-center py-3 px-6 max-w-xl leading-none bg-black text-white w-full"
-                >
-                    Continuar comprando
-                </Link>
-            </div>
-        </Layout>
-    );
-}
+// export default function Cart() {
+//     const { cart } = useLoaderData();
+//     return (
+//         <Layout>
+//             <div className="flex flex-col space-y-7 justify-center items-center md:py-8 md:px-12 px-4 py-6 h-screen">
+//                 {EmptyCart(cart)}
+//                 <Link
+//                     to="/store"
+//                     className="inline-block rounded-sm font-medium text-center py-3 px-6 max-w-xl leading-none bg-black text-white w-full"
+//                 >
+//                     Continuar comprando
+//                 </Link>
+//             </div>
+//         </Layout>
+//     );
+// }

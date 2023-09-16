@@ -17,10 +17,16 @@ import {
 import logo from '../../assets/ob_logo.png';
 import logo_text from '../../assets/ob_logo_text.png';
 import SideMenu from './DrawerMenu';
-import {Link} from 'react-router-dom';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { Link } from 'react-router-dom';
+import ShoppingCart from '../ShoppingCart/Drawer';
+import { useMatches } from '@remix-run/react';
+import { useFetchers } from '@remix-run/react';
+import { useEffect } from 'react';
 
 const NavBar = () => {
+  const [root] = useMatches();
+  const cart = root.data?.cart;
+
   return (
     <AppBar component={'nav'} className="AppBar">
       <Toolbar className="ToolBar">
@@ -43,34 +49,34 @@ const NavBar = () => {
         </Stack>
         <Stack direction="row" className="rightContainer">
           <List className="list">
-            <ListItemButton sx={{justifyContent: 'center'}}>
+            <ListItemButton sx={{ justifyContent: 'center' }}>
               <Link to="/" className="NavLink">
                 <Typography>Inicio</Typography>
               </Link>
             </ListItemButton>
-            <ListItemButton sx={{justifyContent: 'center'}}>
+            <ListItemButton sx={{ justifyContent: 'center' }}>
               <Link to="/services" className="NavLink">
                 <Typography>Servicios</Typography>
               </Link>
             </ListItemButton>
-            <ListItemButton sx={{justifyContent: 'center'}}>
+            <ListItemButton sx={{ justifyContent: 'center' }}>
               <Link to="/store" className="NavLink">
                 <Typography>Tienda</Typography>
               </Link>
             </ListItemButton>
-            <ListItemButton sx={{justifyContent: 'center'}}>
+            <ListItemButton sx={{ justifyContent: 'center' }}>
               <Link to="/about" className="NavLink">
                 <Typography>Conócenos</Typography>
               </Link>
             </ListItemButton>
-            <ListItemButton sx={{justifyContent: 'center'}}>
+            <ListItemButton sx={{ justifyContent: 'center' }}>
               <Link to="/contact" className="NavLink">
                 <Typography>Contacto</Typography>
               </Link>
             </ListItemButton>
-            <ListItemButton sx={{justifyContent: 'center'}}>
+            <ListItemButton sx={{ justifyContent: 'center' }}>
               <Badge badgeContent={4} color="shoppingCar">
-                <ShoppingCartIcon sx={{color: 'white'}} />
+                <ShoppingCart cart={cart} />
               </Badge>
             </ListItemButton>
           </List>

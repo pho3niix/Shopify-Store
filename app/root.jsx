@@ -69,47 +69,47 @@ export function links() {
   ];
 }
 
-// export async function loader({ context }) {
-//   const { storefront, session, cart } = context;
-//   const customerAccessToken = await session.get('customerAccessToken');
-//   const publicStoreDomain = context.env.PUBLIC_STORE_DOMAIN;
+export async function loader({ context }) {
+  const { storefront, session, cart } = context;
+  const customerAccessToken = await session.get('customerAccessToken');
+  const publicStoreDomain = context.env.PUBLIC_STORE_DOMAIN;
 
-//   // validate the customer access token is valid
-//   const { isLoggedIn, headers } = await validateCustomerAccessToken(
-//     customerAccessToken,
-//     session,
-//   );
+  // validate the customer access token is valid
+  const { isLoggedIn, headers } = await validateCustomerAccessToken(
+    customerAccessToken,
+    session,
+  );
 
-//   // defer the cart query by not awaiting it
-//   const cartPromise = cart.get();
+  // defer the cart query by not awaiting it
+  const cartPromise = cart.get();
 
-//   // defer the footer query (below the fold)
-//   const footerPromise = storefront.query(FOOTER_QUERY, {
-//     cache: storefront.CacheLong(),
-//     variables: {
-//       footerMenuHandle: 'footer', // Adjust to your footer menu handle
-//     },
-//   });
+  // defer the footer query (below the fold)
+  const footerPromise = storefront.query(FOOTER_QUERY, {
+    cache: storefront.CacheLong(),
+    variables: {
+      footerMenuHandle: 'footer', // Adjust to your footer menu handle
+    },
+  });
 
-//   // await the header query (above the fold)
-//   const headerPromise = storefront.query(HEADER_QUERY, {
-//     cache: storefront.CacheLong(),
-//     variables: {
-//       headerMenuHandle: 'main-menu', // Adjust to your header menu handle
-//     },
-//   });
+  // await the header query (above the fold)
+  const headerPromise = storefront.query(HEADER_QUERY, {
+    cache: storefront.CacheLong(),
+    variables: {
+      headerMenuHandle: 'main-menu', // Adjust to your header menu handle
+    },
+  });
 
-//   return defer(
-//     {
-//       cart: cartPromise,
-//       footer: footerPromise,
-//       header: await headerPromise,
-//       isLoggedIn,
-//       publicStoreDomain,
-//     },
-//     { headers },
-//   );
-// }
+  return defer(
+    {
+      cart: cartPromise,
+      footer: footerPromise,
+      header: await headerPromise,
+      isLoggedIn,
+      publicStoreDomain,
+    },
+    { headers },
+  );
+}
 
 export default function App() {
   const nonce = useNonce();
@@ -148,24 +148,24 @@ export default function App() {
  *  );
  *  ```
  *  */
-// async function validateCustomerAccessToken(customerAccessToken, session) {
-//   let isLoggedIn = false;
-//   const headers = new Headers();
-//   if (!customerAccessToken?.accessToken || !customerAccessToken?.expiresAt) {
-//     return { isLoggedIn, headers };
-//   }
-//   const expiresAt = new Date(customerAccessToken.expiresAt);
-//   const dateNow = new Date();
-//   const customerAccessTokenExpired = expiresAt < dateNow;
-//   if (customerAccessTokenExpired) {
-//     session.unset('customerAccessToken');
-//     headers.append('Set-Cookie', await session.commit());
-//   } else {
-//     isLoggedIn = true;
-//   }
+async function validateCustomerAccessToken(customerAccessToken, session) {
+  let isLoggedIn = false;
+  const headers = new Headers();
+  if (!customerAccessToken?.accessToken || !customerAccessToken?.expiresAt) {
+    return { isLoggedIn, headers };
+  }
+  const expiresAt = new Date(customerAccessToken.expiresAt);
+  const dateNow = new Date();
+  const customerAccessTokenExpired = expiresAt < dateNow;
+  if (customerAccessTokenExpired) {
+    session.unset('customerAccessToken');
+    headers.append('Set-Cookie', await session.commit());
+  } else {
+    isLoggedIn = true;
+  }
 
-//   return { isLoggedIn, headers };
-// }
+  return { isLoggedIn, headers };
+}
 
 const MENU_FRAGMENT = `#graphql
   fragment MenuItem on MenuItem {
