@@ -14,8 +14,23 @@ import { Suspense } from 'react';
 import { Await, Link } from '@remix-run/react';
 import { CartLineItems, CartActions, CartSummary } from '../ShoppingCart/ShoppingCart';
 
-const CartDrawer = ({ cart }) => {
-    const [openDrawer, setOpenDrawer] = useState(false);
+export function useDrawer(openDefault = false) {
+    const [isOpen, setIsOpen] = useState(openDefault);
+
+    function openDrawer() {
+        setIsOpen(true);
+    }
+    function closeDrawer() {
+        setIsOpen(false);
+    }
+    return {
+        isOpen,
+        openDrawer,
+        closeDrawer,
+    };
+}
+
+const CartDrawer = ({ cart, isOpen, onClose, onClick }) => {
     return (
         <>
             <IconButton
@@ -23,18 +38,18 @@ const CartDrawer = ({ cart }) => {
                 edge="start"
                 color="inherit"
                 aria-label="logo"
-                onClick={() => setOpenDrawer(true)}
+                onClick={onClick}
             >
                 <ShoppingCartIcon />
             </IconButton>
             <Drawer
                 anchor="right"
-                open={openDrawer}
-                onClose={() => setOpenDrawer(false)}
+                open={isOpen}
+                onClose={onClose}
             >
                 <Box color={"black"} p={3} width={450} textAlign={"right"}>
                     <h2>Carrito de compras</h2>
-                    <Suspense>
+                    <Suspense fallback={<p>Loading cart ...</p>}>
                         <Await resolve={cart}>
                             {(data) => (
                                 <>

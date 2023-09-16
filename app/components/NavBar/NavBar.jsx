@@ -18,14 +18,38 @@ import logo from '../../assets/ob_logo.png';
 import logo_text from '../../assets/ob_logo_text.png';
 import SideMenu from './DrawerMenu';
 import { Link } from 'react-router-dom';
-import ShoppingCart from '../ShoppingCart/Drawer';
+import ShoppingCart, { useDrawer } from '../ShoppingCart/Drawer';
 import { useMatches } from '@remix-run/react';
 import { useFetchers } from '@remix-run/react';
 import { useEffect } from 'react';
+import { CartForm } from '@shopify/hydrogen';
 
 const NavBar = () => {
   const [root] = useMatches();
   const cart = root.data?.cart;
+
+  const {
+    isOpen,
+    openDrawer,
+    closeDrawer
+  } = useDrawer();
+
+  const fetchers = useFetchers();
+  const addToCartFetchers = [];
+  for (const fetcher of fetchers) {
+    const formData = fetcher.submission?.formData;
+    if (formData) {
+      const formInputs = CartForm.getFormInput(formData);
+      if (formInputs.action === CartForm.ACTIONS.LinesAdd) {
+        addToCartFetchers.push(fetcher);
+      }
+    }
+  }
+  // When the fetchers array changes, open the drawer if there is an add to cart action
+  useEffect(() => {
+    if (isOpen || addToCartFetchers.length === 0) return;
+    openDrawer();
+  }, [addToCartFetchers]);
 
   return (
     <AppBar component={'nav'} className="AppBar">
@@ -76,7 +100,7 @@ const NavBar = () => {
             </ListItemButton>
             <ListItemButton sx={{ justifyContent: 'center' }}>
               <Badge badgeContent={4} color="shoppingCar">
-                <ShoppingCart cart={cart} />
+                <ShoppingCart cart={cart} isOpen={isOpen} onClick={openDrawer} onClose={closeDrawer} />
               </Badge>
             </ListItemButton>
           </List>
