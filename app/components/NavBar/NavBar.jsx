@@ -105,7 +105,7 @@ const NavBar = () => {
                 <Await resolve={cart}>
                   {(data) => {
                     return (
-                      <Badge badgeContent={data.totalQuantity} color="shoppingCar">
+                      <Badge badgeContent={data.totalQuantity || 0} color="shoppingCar">
                         <ShoppingCart data={data} isOpen={isOpen} onClick={openDrawer} onClose={closeDrawer} />
                       </Badge>);
                   }}
