@@ -23,6 +23,8 @@ import { useMatches } from '@remix-run/react';
 import { useFetchers } from '@remix-run/react';
 import { useEffect } from 'react';
 import { CartForm } from '@shopify/hydrogen';
+import { Suspense } from 'react';
+import { Await } from '@remix-run/react';
 
 const NavBar = () => {
   const [root] = useMatches();
@@ -99,9 +101,16 @@ const NavBar = () => {
               </Link>
             </ListItemButton>
             <ListItemButton sx={{ justifyContent: 'center' }}>
-              <Badge badgeContent={4} color="shoppingCar">
-                <ShoppingCart cart={cart} isOpen={isOpen} onClick={openDrawer} onClose={closeDrawer} />
-              </Badge>
+              <Suspense >
+                <Await resolve={cart}>
+                  {(data) => {
+                    return (
+                      <Badge badgeContent={data.totalQuantity} color="shoppingCar">
+                        <ShoppingCart data={data} isOpen={isOpen} onClick={openDrawer} onClose={closeDrawer} />
+                      </Badge>);
+                  }}
+                </Await>
+              </Suspense>
             </ListItemButton>
           </List>
         </Stack>
