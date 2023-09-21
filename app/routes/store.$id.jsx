@@ -53,9 +53,7 @@ function ProductForm({ productId }) {
                 { lines }
             }
         >
-            <button type="submit" className="AddToCart">
-                Agregar al carrito
-            </button>
+            <input type="submit" className="AddToCart" value={"Agregar al carrito"} />
         </CartForm>
     );
 }
@@ -345,12 +343,10 @@ const Store = () => {
                         </Stack>
                         <Stack
                             marginTop={2}
-                            display={'flex'}
-                            justifyContent={'center'}
+                            position={"relative"}
                             width={'100%'}
                             height={'40%'}
                             bgcolor={'white'}
-                            alignItems={'center'}
                             border={'1px solid black'}
                         >
                             <ProductForm productId={Variants?.id} />
