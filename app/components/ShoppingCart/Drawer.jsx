@@ -13,6 +13,8 @@ import { useState } from "react";
 import { Suspense } from 'react';
 import { Await, Link } from '@remix-run/react';
 import { CartLineItems, CartActions, CartSummary } from '../ShoppingCart/ShoppingCart';
+import MAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 export function useDrawer(openDefault = false) {
     const [isOpen, setIsOpen] = useState(openDefault);
@@ -30,7 +32,8 @@ export function useDrawer(openDefault = false) {
     };
 }
 
-const CartDrawer = ({ data, isOpen, onClose, onClick }) => {
+const CartDrawer = ({ data, isOpen, onClose, onClick, openAlert }) => {
+
     return (
         <>
             <IconButton
@@ -49,6 +52,9 @@ const CartDrawer = ({ data, isOpen, onClose, onClick }) => {
             >
                 <Box color={"black"} p={3} width={450} textAlign={"right"}>
                     <h2>Carrito de compras</h2>
+                    <MAlert className="Cart-Alert" onClose={false} severity="success" sx={{ width: '100%', display: openAlert ? 'flex' : 'none', marginBottom: 1 }}>
+                        Producto agregado con éxito.
+                    </MAlert>
                     {data?.totalQuantity > 0 ? (
                         <>
                             <div className="flex-1 overflow-y-auto">

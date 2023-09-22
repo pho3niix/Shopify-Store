@@ -19,6 +19,7 @@ import StoreStyle from './styles/Store.css';
 import LayoutStyle from './components/Layout/Layout.css';
 import FooterStyle from './components/Footer/Footer.css';
 import CardStyle from './components/Card/Card.css';
+import ShoppingCartStyle from './components/ShoppingCart/ShoppingCart.css'
 import { ThemeProvider } from "@mui/material";
 import { theme } from './Theme/theme'
 
@@ -45,6 +46,7 @@ export function links() {
     { rel: 'stylesheet', href: LayoutStyle },
     { rel: 'stylesheet', href: FooterStyle },
     { rel: 'stylesheet', href: CardStyle },
+    { rel: 'stylesheet', href: ShoppingCartStyle },
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
