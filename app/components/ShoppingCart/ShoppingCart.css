@@ -1,3 +1,50 @@
 .Cart-Alert {
     transition-delay: 1s;
 }
+
+.Cart-Title {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+}
+
+.Cart-Total {
+    font-size: 15px;
+}
+
+.Cart-Title:hover {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.Up-Quantity {
+    border-radius: 5px;
+}
+
+.QuantityModifiers {
+    border: none;
+    color: black;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 5px;
+}
+
+.QuantityModifiers:hover {
+    background-color: rgb(215, 215, 215);
+}
+
+.DeleteIcon {
+    background-color: brown;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.DeleteIcon:hover {
+    background-color: rgb(225, 110, 110);
+}

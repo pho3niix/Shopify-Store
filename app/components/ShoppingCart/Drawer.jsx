@@ -14,7 +14,7 @@ import { Suspense } from 'react';
 import { Await, Link } from '@remix-run/react';
 import { CartLineItems, CartActions, CartSummary } from '../ShoppingCart/ShoppingCart';
 import MAlert from '@mui/material/Alert';
-import Snackbar from '@mui/material/Snackbar';
+import { Stack } from '@mui/system';
 
 export function useDrawer(openDefault = false) {
     const [isOpen, setIsOpen] = useState(openDefault);
@@ -50,8 +50,12 @@ const CartDrawer = ({ data, isOpen, onClose, onClick, openAlert }) => {
                 open={isOpen}
                 onClose={onClose}
             >
-                <Box color={"black"} p={3} width={450} textAlign={"right"}>
-                    <h2>Carrito de compras</h2>
+                <Box color={"black"} p={3} width={450} textAlign={"left"}>
+                    <Stack
+                        marginBottom={4}
+                    >
+                        <h2>Carrito</h2>
+                    </Stack>
                     <MAlert className="Cart-Alert" onClose={false} severity="success" sx={{ width: '100%', display: openAlert ? 'flex' : 'none', marginBottom: 1 }}>
                         Producto agregado con éxito.
                     </MAlert>

@@ -2,6 +2,7 @@ import { Link, useFetcher } from '@remix-run/react';
 import { flattenConnection, Image, Money } from '@shopify/hydrogen-react';
 import { CartForm } from '@shopify/hydrogen';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Stack } from '@mui/system';
 
 export function CartLineItems({ linesObj }) {
     const lines = flattenConnection(linesObj);
@@ -23,27 +24,45 @@ function LineItem({ lineItem }) {
     let ClearID = RawId.substring(RawId.lastIndexOf('/') + 1, RawId.length)
 
     return (
-        <div className="flex gap-4">
-            <Link
-                to={`/store/${ClearID}`}
-                className="flex-shrink-0"
-            >
-                <Image data={merchandise.image} width={110} height={110} />
-            </Link>
-            <div className="flex-1">
+        <Stack
+            display={'flex'}
+            direction={'row'}
+            width={'100%'}
+            justifyContent={'space-between'}
+            marginBottom={4}
+        >
+            <Stack>
                 <Link
                     to={`/store/${ClearID}`}
-                    className="no-underline hover:underline"
+                >
+                    <Image data={merchandise.image} width={110} height={110} />
+                </Link>
+            </Stack>
+            <Stack
+                display={'flex'}
+                direction={'column'}
+                alignItems={'start'}
+                justifyContent={'space-between'}
+                width={'70%'}
+            >
+                <Link
+                    to={`/store/${ClearID}`}
+                    className="Cart-Title"
                 >
                     {merchandise.product.title}
                 </Link>
-                <div className="text-gray-800 text-sm">Qty: {quantity}</div>
-                <div className="text-gray-800 text-sm">Precio unitario: {lineItem.cost.amountPerQuantity.amount}</div>
-                <ItemRemoveButton lineIds={[lineItem.id]} />
-                <CartLineQuantity line={lineItem} />
-            </div>
-            <Money data={lineItem.cost.totalAmount} />
-        </div>
+                <Money className="Cart-Total" data={lineItem.cost.totalAmount} />
+                <Stack
+                    display={'flex'}
+                    direction={'row'}
+                    width={'50%'}
+                    alignItems={'center'}
+                >
+                    <CartLineQuantity line={lineItem} />
+                    <ItemRemoveButton lineIds={[lineItem.id]} />
+                </Stack>
+            </Stack>
+        </Stack >
     );
 }
 
@@ -90,20 +109,24 @@ export function CartActions({ checkoutUrl }) {
 
 function ItemRemoveButton({ lineIds }) {
     return (
-        <CartForm
-            route="/cart"
-            action={CartForm.ACTIONS.LinesRemove}
-            inputs={
-                { lineIds }
-            }
+        <Stack
+            position={'relative'}
         >
-            <button
-                className="bg-white border-black text-black hover:text-white hover:bg-black rounded-md font-small text-center my-2 max-w-xl leading-none border w-10 h-10 flex items-center justify-center"
-                type="submit"
+            <CartForm
+                route="/cart"
+                action={CartForm.ACTIONS.LinesRemove}
+                inputs={
+                    { lineIds }
+                }
             >
-                <DeleteIcon />
-            </button>
-        </CartForm>
+                <button
+                    className="DeleteIcon"
+                    type="submit"
+                >
+                    <DeleteIcon />
+                </button>
+            </CartForm>
+        </Stack>
     );
 }
 
@@ -126,29 +149,62 @@ function CartLineQuantity({ line }) {
     const nextQuantity = Number((quantity + 1).toFixed(0));
 
     return (
-        <div className="cart-line-quantiy">
-            <small>Quantity: {quantity} &nbsp;&nbsp;</small>
-            <CartLineUpdateButton lines={[{ id: lineId, quantity: prevQuantity }]}>
-                <button
-                    aria-label="Decrease quantity"
-                    disabled={quantity <= 1}
-                    name="decrease-quantity"
-                    value={prevQuantity}
-                >
-                    <span>&#8722; </span>
-                </button>
-            </CartLineUpdateButton>
-            &nbsp;
-            <CartLineUpdateButton lines={[{ id: lineId, quantity: nextQuantity }]}>
-                <button
-                    aria-label="Increase quantity"
-                    name="increase-quantity"
-                    value={nextQuantity}
-                >
-                    <span>&#43;</span>
-                </button>
-            </CartLineUpdateButton>
-            &nbsp;
-        </div>
+        <Stack
+            display={'flex'}
+            direction={'row'}
+            width={'100%'}
+            justifyContent={'space-between'}
+            marginRight={2}
+            height={'100%'}
+            className="Up-Quantity"
+            bgcolor={'#e9e9ed'}
+            alignItems={'center'}
+        >
+            <Stack
+                position={'relative'}
+                width={'35%'}
+                height={'100%'}
+                display={'flex'}
+                alignItems={'start'}
+            >
+                <CartLineUpdateButton lines={[{ id: lineId, quantity: prevQuantity }]}>
+                    <button
+                        aria-label="Decrease quantity"
+                        disabled={quantity <= 1}
+                        name="decrease-quantity"
+                        value={prevQuantity}
+                        className="QuantityModifiers"
+                    >
+                        <span>&#8722; </span>
+                    </button>
+                </CartLineUpdateButton>
+            </Stack>
+            <Stack
+                position={'relative'}
+                width={'30%'}
+                display={'flex'}
+                alignItems={'center'}
+            >
+                <small>{quantity}</small>
+            </Stack>
+            <Stack
+                position={'relative'}
+                width={'35%'}
+                height={'100%'}
+                display={'flex'}
+                alignItems={'start'}
+            >
+                <CartLineUpdateButton lines={[{ id: lineId, quantity: nextQuantity }]}>
+                    <button
+                        aria-label="Increase quantity"
+                        name="increase-quantity"
+                        value={nextQuantity}
+                        className="QuantityModifiers"
+                    >
+                        <span>&#43;</span>
+                    </button>
+                </CartLineUpdateButton>
+            </Stack>
+        </Stack>
     );
 }
