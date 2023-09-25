@@ -48,3 +48,18 @@
 .DeleteIcon:hover {
     background-color: rgb(225, 110, 110);
 }
+
+.Checkout-Url {
+    text-decoration: none;
+    color: white;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Checkout-Url:hover{
+    background-color: #6c6cea;
+    border-radius: 5px;
+}

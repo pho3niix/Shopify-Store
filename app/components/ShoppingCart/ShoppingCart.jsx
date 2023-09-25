@@ -3,6 +3,7 @@ import { flattenConnection, Image, Money } from '@shopify/hydrogen-react';
 import { CartForm } from '@shopify/hydrogen';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Stack } from '@mui/system';
+import { Typography } from '@mui/material';
 
 export function CartLineItems({ linesObj }) {
     const lines = flattenConnection(linesObj);
@@ -67,27 +68,35 @@ function LineItem({ lineItem }) {
 }
 
 export function CartSummary({ cost }) {
+    /**
+     * {cost?.subtotalAmount?.amount ? (
+            <Money data={cost?.subtotalAmount} />
+        ) : (
+            '-'
+        )}
+     */
     return (
-        <>
-            <dl className="space-y-2">
-                <div className="flex items-center justify-between">
-                    <dt>Subtotal</dt>
-                    <dd>
-                        {cost?.subtotalAmount?.amount ? (
-                            <Money data={cost?.subtotalAmount} />
-                        ) : (
-                            '-'
-                        )}
-                    </dd>
-                </div>
-                <div className="flex items-center justify-between">
-                    <dt className="flex items-center">
-                        <span>Costo aproximado de envío</span>
-                    </dt>
-                    <dd className="text-green-600">Libre</dd>
-                </div>
-            </dl>
-        </>
+        <Stack
+            display={'flex'}
+            alignItems={'center'}
+            justifyContent={'space-between'}
+        >
+            <Stack
+                display={'flex'}
+                direction={'row'}
+                width={'85%'}
+                justifyContent={'space-between'}
+            >
+                <Typography>
+                    Subtotal
+                </Typography>
+                {cost?.subtotalAmount?.amount ? (
+                    <Money data={cost?.subtotalAmount} />
+                ) : (
+                    '-'
+                )}
+            </Stack>
+        </Stack>
     );
 }
 
@@ -95,14 +104,22 @@ export function CartActions({ checkoutUrl }) {
     if (!checkoutUrl) return null;
 
     return (
-        <div className="flex flex-col mt-2">
+        <Stack
+            display={'flex'}
+            alignItems={'center'}
+            justifyContent={'center'}
+            bgcolor={'#5655ef'}
+            width={'70%'}
+            height={'4vh'}
+            borderRadius={'5px'}
+        >
             <a
                 href={checkoutUrl}
-                className="bg-black text-white px-6 py-3 w-full rounded-md text-center font-medium"
+                className='Checkout-Url'
             >
                 Continuar al checkout
             </a>
-        </div>
+        </Stack>
     );
 }
 

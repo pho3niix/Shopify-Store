@@ -47,12 +47,12 @@ const CartDrawer = ({ data, isOpen, onClose, onClick, openAlert }) => {
             </IconButton>
             <Drawer
                 anchor="right"
-                open={isOpen}
+                open={true}
                 onClose={onClose}
             >
-                <Box color={"black"} p={3} width={450} textAlign={"left"}>
+                <Box color={"black"} width={450} textAlign={"left"}>
                     <Stack
-                        marginBottom={4}
+                        padding={3}
                     >
                         <h2>Carrito</h2>
                     </Stack>
@@ -60,17 +60,33 @@ const CartDrawer = ({ data, isOpen, onClose, onClick, openAlert }) => {
                         Producto agregado con éxito.
                     </MAlert>
                     {data?.totalQuantity > 0 ? (
-                        <>
-                            <div className="flex-1 overflow-y-auto">
-                                <div className="flex flex-col space-y-7 justify-between items-center md:py-8 md:px-12 px-4 py-6">
-                                    <CartLineItems linesObj={data.lines} />
-                                </div>
-                            </div>
-                            <div className="w-full md:px-12 px-4 py-6 space-y-6 border border-1 border-gray-00">
+                        <Stack
+                            display={'flex'}
+                            direction={'column'}
+                            justifyContent={'space-between'}
+                        >
+                            <Stack
+                                padding={3}
+                                overflowY={'scroll'}
+                            >
+                                <CartLineItems linesObj={data.lines} />
+                            </Stack>
+                            <Stack
+                                display={'flex'}
+                                direction={'column'}
+                                justifyContent={'space-around'}
+                                height={'10vh'}
+                                bgcolor={'#f7f7f7'}
+                            >
                                 <CartSummary cost={data.cost} />
-                                <CartActions checkoutUrl={data.checkoutUrl} />
-                            </div>
-                        </>
+                                <Stack
+                                    display={'flex'}
+                                    alignItems={'center'}
+                                >
+                                    <CartActions checkoutUrl={data.checkoutUrl} />
+                                </Stack>
+                            </Stack>
+                        </Stack>
                     ) : (
                         <div className="flex flex-col space-y-7 justify-center items-center md:py-8 md:px-12 px-4 py-6 h-screen">
                             <h2 className="whitespace-pre-wrap max-w-prose font-bold text-4xl">
