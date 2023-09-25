@@ -203,9 +203,9 @@ const Store = () => {
                     <Box
                         height={{
                             xs: '30vh',
-                            sm: '50vh',
-                            md: '60vh',
-                            lg: '70vh',
+                            sm: '40vh',
+                            md: '50vh',
+                            lg: '60vh',
                             xl: '80vh'
                         }}
                         component="img"

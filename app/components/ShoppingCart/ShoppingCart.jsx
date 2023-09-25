@@ -36,7 +36,7 @@ function LineItem({ lineItem }) {
                 <Link
                     to={`/store/${ClearID}`}
                 >
-                    <Image data={merchandise.image} width={110} height={110} />
+                    <Image className='Cart-Image' data={merchandise.image} width={110} height={110} />
                 </Link>
             </Stack>
             <Stack
@@ -68,13 +68,6 @@ function LineItem({ lineItem }) {
 }
 
 export function CartSummary({ cost }) {
-    /**
-     * {cost?.subtotalAmount?.amount ? (
-            <Money data={cost?.subtotalAmount} />
-        ) : (
-            '-'
-        )}
-     */
     return (
         <Stack
             display={'flex'}

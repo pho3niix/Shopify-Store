@@ -13,8 +13,11 @@
 }
 
 .Cart-Title:hover {
-    text-decoration: underline;
-    font-weight: bold;
+    color: rgb(103, 103, 103)
+}
+
+.Cart-Image:hover {
+    opacity: .8;
 }
 
 .Up-Quantity {
@@ -59,7 +62,7 @@
     align-items: center;
 }
 
-.Checkout-Url:hover{
+.Checkout-Url:hover {
     background-color: #6c6cea;
     border-radius: 5px;
 }
