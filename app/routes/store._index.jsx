@@ -22,12 +22,12 @@ export async function loader({ params, request, context }) {
     const query = Action ? await storefront.query(PRODUCT_QUERY_PREV, {
         variables: {
             cursor: Cursor,
-            pageBy: 1
+            pageBy: 10
         }
     }) : await storefront.query(PRODUCT_QUERY_NEXT, {
         variables: {
             cursor: Cursor,
-            pageBy: 1
+            pageBy: 10
         }
     });
 
@@ -45,20 +45,21 @@ function List({ Items }) {
         return Items.map((e, i) => {
             let RawId = e.id;
             let ClearID = RawId.substring(RawId.lastIndexOf('/') + 1, RawId.length);
+            let Discount = Math.floor(
+                ((e.compareAtPriceRange.maxVariantPrice.amount -
+                    e.priceRange.maxVariantPrice.amount) /
+                    e.compareAtPriceRange.maxVariantPrice.amount) *
+                100,
+            );
             e = {
                 ...e,
                 image: e.images.nodes[0].url,
                 id: ClearID,
                 variant: e.variants.nodes[0].id,
-                nombre: e.title,
+                nombre: e.title ?? "Sin nombre agregado.",
                 precio_final: e.priceRange.maxVariantPrice.amount,
                 precio_real: e.compareAtPriceRange.maxVariantPrice.amount,
-                descuento: Math.floor(
-                    ((e.compareAtPriceRange.maxVariantPrice.amount -
-                        e.priceRange.maxVariantPrice.amount) /
-                        e.compareAtPriceRange.maxVariantPrice.amount) *
-                    100,
-                ),
+                descuento: Discount ? Discount : 0,
             };
             return <Card key={i}>{e}</Card>;
         });
@@ -127,23 +128,15 @@ const Store = () => {
                     />
                 </Stack>
                 <Stack
-                    sx={{
-                        marginTop: 4,
-                    }}
-                    className="list"
+                    className="StoreList"
                 >
-                    {/* <Pagination connection={data.products}>
-                        {({ nodes }) => (
-                            <>
-                                <List
-                                    Items={nodes}
-                                />
-                            </>
-                        )}
-                    </Pagination> */}
-                    {List({ Items })}
-                    <button onClick={onPrevPage}>prev</button>
-                    <button onClick={onNextPage}>next</button>
+                    <List Items={Items} />
+                </Stack>
+                <Stack
+                    className='PaginationComponent'
+                >
+                    <input type="button" value={"Anterior"} className={hasPreviousPage ? 'NavButton' : 'DisableButton'} disabled={!hasPreviousPage} onClick={onPrevPage} />
+                    <input type="button" value={"Siguiente"} className={hasNextPage ? 'NavButton' : 'DisableButton'} disabled={!hasNextPage} onClick={onNextPage} />
                 </Stack>
             </Stack>
         </Layout>
