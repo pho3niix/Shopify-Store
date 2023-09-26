@@ -21,7 +21,8 @@ import FooterStyle from './components/Footer/Footer.css';
 import CardStyle from './components/Card/Card.css';
 import ShoppingCartStyle from './components/ShoppingCart/ShoppingCart.css'
 import { ThemeProvider } from "@mui/material";
-import { theme } from './Theme/theme'
+import { theme } from './Theme/theme';
+// import { PageContextProvider } from './services/Context'
 
 // This is important to avoid re-fetching root queries on sub-navigations
 export const shouldRevalidate = ({ formMethod, currentUrl, nextUrl }) => {
@@ -118,22 +119,24 @@ export default function App() {
   const data = useLoaderData();
 
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        <ThemeProvider theme={theme}>
-          <Outlet />
-        </ThemeProvider>
-        <ScrollRestoration nonce={nonce} />
-        <Scripts nonce={nonce} />
-        <LiveReload nonce={nonce} />
-      </body>
-    </html>
+    // <PageContextProvider>
+      <html lang="en">
+        <head>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width,initial-scale=1" />
+          <Meta />
+          <Links />
+        </head>
+        <body>
+          <ThemeProvider theme={theme}>
+            <Outlet />
+          </ThemeProvider>
+          <ScrollRestoration nonce={nonce} />
+          <Scripts nonce={nonce} />
+          <LiveReload nonce={nonce} />
+        </body>
+      </html>
+    // </PageContextProvider>
   );
 }
 

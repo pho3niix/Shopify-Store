@@ -150,8 +150,9 @@ const Store = () => {
                     <Stack
                         marginRight={{ xs: '1%', sm: '1%', md: '1%' }}
                         maxHeight={'160px'}
+                        key={i}
                     >
-                        <Box width={'100%'} component="img" src={source} key={i} />
+                        <Box width={'100%'} component="img" src={source} />
                     </Stack>,
                 );
             } else {
@@ -159,8 +160,9 @@ const Store = () => {
                     <Stack
                         marginLeft={{ xs: '1%', sm: '1%', md: '1%' }}
                         maxHeight={'160px'}
+                        key={i}
                     >
-                        <Box width={'100%'} component="img" src={source} key={i} />
+                        <Box width={'100%'} component="img" src={source} />
                     </Stack>,
                 );
             }
@@ -171,7 +173,6 @@ const Store = () => {
 
     return (
         <Layout>
-            {/*  display={'flex'} direction={'row'} width={'80%'} height={'75vh'} */}
             <Stack
                 display={'flex'}
                 direction={{

@@ -1,18 +1,26 @@
 import Layout from '../components/Layout/Layout';
 import Card from '../components/Card/Card';
-import {Stack, Typography, TextField, Pagination} from '@mui/material';
-import {defer, redirec, json} from '@shopify/remix-oxygen';
-import {Await, Link, useLoaderData} from '@remix-run/react';
+import { Stack, Typography, TextField, Pagination } from '@mui/material';
+import { defer, redirec, json } from '@shopify/remix-oxygen';
+import { Await, Link, useLoaderData } from '@remix-run/react';
+import { useState } from 'react';
+// import { usePageContext } from '../services/Context'
 
 export const meta = () => {
-  return [{title: 'Tienda'}];
+  return [{ title: 'Tienda' }];
 };
 
-export async function loader({params, request, context}) {
-  const {handle} = params;
-  const {storefront} = context;
+export async function loader({ params, request, context }) {
+  const { handle } = params;
+  const { storefront } = context;
 
-  const query = await storefront.query(PRODUCT_QUERY);
+  console.log(request)
+
+  const query = await storefront.query(PRODUCT_QUERY, {
+    variables: {
+      // ProductId: RawId,
+    },
+  });
 
   return json({
     data: query,
@@ -20,8 +28,10 @@ export async function loader({params, request, context}) {
 }
 
 const Store = () => {
-  const {data} = useLoaderData();
+  const { data } = useLoaderData();
   const Items = data.products.nodes;
+
+  // const { page, setPage } = usePageContext();
 
   function List() {
     if (Items.length > 0) {
@@ -40,7 +50,7 @@ const Store = () => {
             ((e.compareAtPriceRange.maxVariantPrice.amount -
               e.priceRange.maxVariantPrice.amount) /
               e.compareAtPriceRange.maxVariantPrice.amount) *
-              100,
+            100,
           ),
         };
         return <Card key={i}>{e}</Card>;
@@ -65,8 +75,8 @@ const Store = () => {
                 border: '2px solid gray!important',
                 borderRadius: 1,
               },
-              '& .MuiInputLabel-root': {color: 'gray'},
-              '& .MuiInputBase-input': {color: 'black'},
+              '& .MuiInputLabel-root': { color: 'gray' },
+              '& .MuiInputBase-input': { color: 'black' },
             }}
           />
         </Stack>
@@ -89,10 +99,11 @@ const Store = () => {
               },
             }}
             className="PaginationElement"
-            count={Math.ceil(Items.length / 10)}
+            count={Math.ceil(Items.length / 1)}
             showFirstButton
             showLastButton
             color="primary"
+            onChange={(event, value) => setPage(value)}
           />
         </Stack>
       </Stack>
