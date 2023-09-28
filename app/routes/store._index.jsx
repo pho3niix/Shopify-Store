@@ -15,20 +15,28 @@ export async function loader({ params, request, context }) {
     const { handle } = params;
     const { storefront } = context;
 
+    // Pagination params
     const SearchParams = new URLSearchParams(new URL(request.url).search);
     const Cursor = SearchParams.get('cursor') ?? undefined;
     const Action = SearchParams.get('direction') === 'prev';
 
+    // Search params
+    const Filters = SearchParams.get('filter');
+
+    let variables = {
+        cursor: Cursor,
+        pageBy: 10
+    };
+
+    if (Filters) {
+        variables.query = Filters
+    }
+
+
     const query = Action ? await storefront.query(PRODUCT_QUERY_PREV, {
-        variables: {
-            cursor: Cursor,
-            pageBy: 10
-        }
+        variables
     }) : await storefront.query(PRODUCT_QUERY_NEXT, {
-        variables: {
-            cursor: Cursor,
-            pageBy: 10
-        }
+        variables
     });
 
     const PageInfo = query.products.pageInfo
@@ -69,6 +77,7 @@ function List({ Items }) {
 }
 
 const Store = () => {
+    // Pagination configuration  
     const { data, pageInfo } = useLoaderData();
     const [endCursor, setEndCursor] = useState(null);
     const [hasNextPage, setHasNextPage] = useState(false);
@@ -104,8 +113,18 @@ const Store = () => {
             setStartCursor(fetcher.data.pageInfo.startCursor);
         };
     }, [fetcher.data]);
-
     const Items = journalProducts;
+
+    // Search configuration
+    const [Search, SetSearch] = useState('');
+
+    useEffect(() => {
+        if (Search.length > 0) {
+            fetcher.load(`${isLocation.pathname}?filter=${Search}`)
+        }else{
+            fetcher.load(`${isLocation.pathname}?filter=`)
+        }
+    }, [Search])
 
     return (
         <Layout>
@@ -125,6 +144,7 @@ const Store = () => {
                             '& .MuiInputLabel-root': { color: 'gray' },
                             '& .MuiInputBase-input': { color: 'black' },
                         }}
+                        onChange={e => SetSearch(e.target.value)}
                     />
                 </Stack>
                 <Stack
@@ -150,8 +170,9 @@ const PRODUCT_QUERY_NEXT = `#graphql
 query GetAllProducts(
     $pageBy: Int!
     $cursor: String
+    $query: String
   ){
-    products(first: $pageBy, after: $cursor) {
+    products(first: $pageBy, after: $cursor, query: $query) {
       nodes {
         id
         title
@@ -204,8 +225,9 @@ const PRODUCT_QUERY_PREV = `#graphql
 query GetAllProducts(
     $pageBy: Int!
     $cursor: String
+    $query: String
   ){
-    products(last: $pageBy, before: $cursor) {
+    products(last: $pageBy, before: $cursor, query: $query) {
       nodes {
         id
         title
