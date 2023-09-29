@@ -42,8 +42,8 @@ const SideMenu = () => {
         if (collections.length > 0) {
             return collections.map((e, i) => {
                 return (
-                    <List>
-                        <ListItemText>
+                    <List key={i}>
+                        <ListItemText key={i}>
                             <Typography variant="h6" color={"text.secondary"}>
                                 {e.title}
                             </Typography>
@@ -52,7 +52,7 @@ const SideMenu = () => {
                             let RawId = item.id;
                             let ClearID = RawId.substring(RawId.lastIndexOf('/') + 1, RawId.length);
                             return (
-                                <ListItemButton>
+                                <ListItemButton key={index}>
                                     <Link to={{
                                         pathname: `/store/${ClearID}`
                                     }}>

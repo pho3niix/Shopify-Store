@@ -24,7 +24,7 @@ export async function loader({ params, request, context }) {
 
     let variables = {
         cursor: Cursor,
-        pageBy: 10
+        pageBy: 1
     };
 
     if (Filters) {
@@ -37,11 +37,29 @@ export async function loader({ params, request, context }) {
         variables
     });
 
-    const PageInfo = query.products.pageInfo
+    const { collections } = Action ? await storefront.query(COLLECTIONS_QUERY_PREV, {
+        variables
+    }) : await storefront.query(COLLECTIONS_QUERY_NEXT, {
+        variables
+    });
+
+    let Products = query.products;
+
+    let PageInfo = query.products.pageInfo
+
+    if (variables.query && collections.nodes.length > 0) {
+        let CollectionsProducts = collections.nodes[0].products;
+        if (CollectionsProducts.nodes.length > 0) {
+            Products = CollectionsProducts;
+            PageInfo = CollectionsProducts.pageInfo
+        }
+    }
 
     return json({
-        data: query,
-        pageInfo: PageInfo
+        products: {
+            nodes: Products.nodes,
+            pageInfo: PageInfo
+        }
     });
 }
 
@@ -75,8 +93,20 @@ function List({ Items }) {
 }
 
 const Store = () => {
+    const { products } = useLoaderData();
+
+    // Search configuration
+    const [Search, SetSearch] = useState('');
+
+    useEffect(() => {
+        if (Search.length > 0) {
+            fetcher.load(`${isLocation.pathname}?filter=${Search}`)
+        } else {
+            fetcher.load(`${isLocation.pathname}?filter=`)
+        }
+    }, [Search])
+
     // Pagination configuration  
-    const { data, pageInfo } = useLoaderData();
     const [endCursor, setEndCursor] = useState(null);
     const [hasNextPage, setHasNextPage] = useState(false);
     const [hasPreviousPage, setHasPreviousPage] = useState(false);
@@ -86,43 +116,44 @@ const Store = () => {
     const fetcher = useFetcher();
 
     const onNextPage = () => {
-        if (hasNextPage) fetcher.load(`${isLocation.pathname}?direction=next&cursor=${endCursor}`)
+        let loader = ''
+        if (hasNextPage || Search.length != 0) {
+            if (hasNextPage) loader = loader + `${isLocation.pathname}?direction=next&cursor=${endCursor}`
+            if (Search.length != 0) loader = loader + `&filter=${Search}`
+            fetcher.load(loader)
+        }
     }
 
     const onPrevPage = () => {
-        if (hasPreviousPage) fetcher.load(`${isLocation.pathname}?direction=prev&cursor=${startCursor}`)
+        let loader = ''
+        if (hasPreviousPage || Search.length != 0) {
+            if (hasPreviousPage) loader = loader + `${isLocation.pathname}?direction=prev&cursor=${startCursor}`
+            if (Search.length != 0) loader = loader + `&filter=${Search}`
+            fetcher.load(loader)
+        }
     }
 
     useEffect(() => {
-        setEndCursor(pageInfo.endCursor);
-        setHasNextPage(pageInfo.hasNextPage);
-        setHasPreviousPage(pageInfo.hasPreviousPage);
-        setStartCursor(pageInfo.startCursor)
-        setJournalProducts(data.products.nodes);
+        setEndCursor(products.pageInfo.endCursor);
+        setHasNextPage(products.pageInfo.hasNextPage);
+        setHasPreviousPage(products.pageInfo.hasPreviousPage);
+        setStartCursor(products.pageInfo.startCursor)
+        setJournalProducts(products.nodes);
     }, []);
+
     useEffect(() => {
         if (!fetcher.data) {
             return;
         } else {
-            setJournalProducts(fetcher.data.data.products.nodes);
-            setEndCursor(fetcher.data.pageInfo.endCursor);
-            setHasNextPage(fetcher.data.pageInfo.hasNextPage);
-            setHasPreviousPage(fetcher.data.pageInfo.hasPreviousPage);
-            setStartCursor(fetcher.data.pageInfo.startCursor);
+            setJournalProducts(fetcher.data.products.nodes);
+            setEndCursor(fetcher.data.products.pageInfo.endCursor);
+            setHasNextPage(fetcher.data.products.pageInfo.hasNextPage);
+            setHasPreviousPage(fetcher.data.products.pageInfo.hasPreviousPage);
+            setStartCursor(fetcher.data.products.pageInfo.startCursor);
         };
     }, [fetcher.data]);
+    
     const Items = journalProducts;
-
-    // Search configuration
-    const [Search, SetSearch] = useState('');
-
-    useEffect(() => {
-        if (Search.length > 0) {
-            fetcher.load(`${isLocation.pathname}?filter=${Search}`)
-        }else{
-            fetcher.load(`${isLocation.pathname}?filter=`)
-        }
-    }, [Search])
 
     return (
         <Layout>
@@ -162,6 +193,119 @@ const Store = () => {
 };
 
 export default Store;
+
+const COLLECTIONS_QUERY_PREV = `#graphql
+query getAllCollections($query: String, $pageBy: Int!, $cursor: String) {
+    collections(first: 10, query: $query) {
+      nodes {
+        title
+        products(last: $pageBy, before: $cursor) {
+          nodes {
+            id
+            title
+            images(first: 10) {
+              nodes {
+                url
+              }
+            }
+            compareAtPriceRange {
+              maxVariantPrice {
+                amount
+              }
+            }
+            priceRange {
+              maxVariantPrice {
+                amount
+              }
+            }
+            variants(first: 1) {
+              nodes {
+                id
+                title
+                availableForSale
+                price {
+                  currencyCode
+                  amount
+                }
+                compareAtPrice {
+                  currencyCode
+                  amount
+                }
+                selectedOptions {
+                  name
+                  value
+                }
+              }
+            }
+          }
+          pageInfo {
+            hasPreviousPage
+            hasNextPage
+            startCursor
+            endCursor
+          }
+        }
+      }
+    }
+  }
+`
+
+
+const COLLECTIONS_QUERY_NEXT = `#graphql
+query getAllCollections($query: String, $pageBy: Int!, $cursor: String) {
+    collections(first: 10, query: $query) {
+      nodes {
+        title
+        products(first: $pageBy, after: $cursor) {
+          nodes {
+            id
+            title
+            images(first: 10) {
+              nodes {
+                url
+              }
+            }
+            compareAtPriceRange {
+              maxVariantPrice {
+                amount
+              }
+            }
+            priceRange {
+              maxVariantPrice {
+                amount
+              }
+            }
+            variants(first: 1) {
+              nodes {
+                id
+                title
+                availableForSale
+                price {
+                  currencyCode
+                  amount
+                }
+                compareAtPrice {
+                  currencyCode
+                  amount
+                }
+                selectedOptions {
+                  name
+                  value
+                }
+              }
+            }
+          }
+          pageInfo {
+            hasPreviousPage
+            hasNextPage
+            startCursor
+            endCursor
+          }
+        }
+      }
+    }
+  }
+`
 
 // 1
 const PRODUCT_QUERY_NEXT = `#graphql
