@@ -44,9 +44,11 @@ const SideMenu = () => {
                 return (
                     <List key={i}>
                         <ListItemText key={i}>
-                            <Typography variant="h6" color={"text.secondary"}>
-                                {e.title}
-                            </Typography>
+                            <Link to={`/store?collection=${e.title}`}>
+                                <Typography variant="h6" color={"text.secondary"}>
+                                    {e.title}
+                                </Typography>
+                            </Link>
                         </ListItemText>
                         {e.products.map((item, index) => {
                             let RawId = item.id;

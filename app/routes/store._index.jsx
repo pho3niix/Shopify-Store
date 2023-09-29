@@ -3,7 +3,7 @@ import Card from '../components/Card/Card';
 import { Stack, Typography, TextField } from '@mui/material';
 import { defer, redirec, json } from '@shopify/remix-oxygen';
 import { Await, Link, useLoaderData, useLocation, useFetcher } from '@remix-run/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 // import { usePageContext } from '../services/Context'
 
 export const meta = () => {
@@ -24,7 +24,7 @@ export async function loader({ params, request, context }) {
 
     let variables = {
         cursor: Cursor,
-        pageBy: 1
+        pageBy: 10
     };
 
     if (Filters) {
@@ -94,9 +94,14 @@ function List({ Items }) {
 
 const Store = () => {
     const { products } = useLoaderData();
+    const isLocation = useLocation();
+    const fetcher = useFetcher();
 
     // Search configuration
+    const CollectionParams = new URLSearchParams(isLocation.search).get('collection') || '';
     const [Search, SetSearch] = useState('');
+
+    const Filters = isLocation.search.substring(1);
 
     useEffect(() => {
         if (Search.length > 0) {
@@ -106,14 +111,19 @@ const Store = () => {
         }
     }, [Search])
 
+    useEffect(() => {
+        let Value = Filters.split("=")[1];
+        if (Filters.includes("collection") && Value.length > 0) {
+            SetSearch(Value)
+        }
+    }, [Filters])
+
     // Pagination configuration  
     const [endCursor, setEndCursor] = useState(null);
     const [hasNextPage, setHasNextPage] = useState(false);
     const [hasPreviousPage, setHasPreviousPage] = useState(false);
     const [startCursor, setStartCursor] = useState(null);
     const [journalProducts, setJournalProducts] = useState([]);
-    const isLocation = useLocation();
-    const fetcher = useFetcher();
 
     const onNextPage = () => {
         let loader = ''
@@ -152,7 +162,7 @@ const Store = () => {
             setStartCursor(fetcher.data.products.pageInfo.startCursor);
         };
     }, [fetcher.data]);
-    
+
     const Items = journalProducts;
 
     return (
@@ -173,6 +183,7 @@ const Store = () => {
                             '& .MuiInputLabel-root': { color: 'gray' },
                             '& .MuiInputBase-input': { color: 'black' },
                         }}
+                        defaultValue={CollectionParams}
                         onChange={e => SetSearch(e.target.value)}
                     />
                 </Stack>
