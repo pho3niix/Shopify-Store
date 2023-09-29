@@ -5,7 +5,6 @@ import { defer, redirec, json } from '@shopify/remix-oxygen';
 import { Await, Link, useLoaderData, useLocation, useFetcher } from '@remix-run/react';
 import { useEffect, useState } from 'react';
 // import { usePageContext } from '../services/Context'
-import { Pagination, getPaginationVariables } from '@shopify/hydrogen';
 
 export const meta = () => {
     return [{ title: 'Tienda' }];
@@ -31,7 +30,6 @@ export async function loader({ params, request, context }) {
     if (Filters) {
         variables.query = Filters
     }
-
 
     const query = Action ? await storefront.query(PRODUCT_QUERY_PREV, {
         variables
@@ -72,7 +70,7 @@ function List({ Items }) {
             return <Card key={i}>{e}</Card>;
         });
     } else {
-        return <Typography>Sin información para mostrar</Typography>;
+        return <Typography>Sin información para mostrar.</Typography>;
     }
 }
 

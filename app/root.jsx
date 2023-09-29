@@ -86,6 +86,8 @@ export async function loader({ context }) {
   // defer the cart query by not awaiting it
   const cartPromise = cart.get();
 
+  const CollectionsPromise = storefront.query(COLLECTIONS_QUERY)
+
   // defer the footer query (below the fold)
   const footerPromise = storefront.query(FOOTER_QUERY, {
     cache: storefront.CacheLong(),
@@ -109,6 +111,7 @@ export async function loader({ context }) {
       header: await headerPromise,
       isLoggedIn,
       publicStoreDomain,
+      collections: await CollectionsPromise
     },
     { headers },
   );
@@ -120,22 +123,22 @@ export default function App() {
 
   return (
     // <PageContextProvider>
-      <html lang="en">
-        <head>
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="width=device-width,initial-scale=1" />
-          <Meta />
-          <Links />
-        </head>
-        <body>
-          <ThemeProvider theme={theme}>
-            <Outlet />
-          </ThemeProvider>
-          <ScrollRestoration nonce={nonce} />
-          <Scripts nonce={nonce} />
-          <LiveReload nonce={nonce} />
-        </body>
-      </html>
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <ThemeProvider theme={theme}>
+          <Outlet />
+        </ThemeProvider>
+        <ScrollRestoration nonce={nonce} />
+        <Scripts nonce={nonce} />
+        <LiveReload nonce={nonce} />
+      </body>
+    </html>
     // </PageContextProvider>
   );
 }
@@ -241,3 +244,23 @@ const FOOTER_QUERY = `#graphql
   }
   ${MENU_FRAGMENT}
 `;
+
+
+const COLLECTIONS_QUERY = `#graphql
+  query {
+    collections(first: 100) {
+      edges {
+        node {
+          id
+          title
+          products(first: 10){
+            nodes{
+              id
+              title
+            }
+          }
+        }
+      }
+    }
+  }
+`
