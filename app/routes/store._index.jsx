@@ -98,18 +98,10 @@ const Store = () => {
     const fetcher = useFetcher();
 
     // Search configuration
-    const CollectionParams = new URLSearchParams(isLocation.search).get('collection') || '';
+    const [CollectionParams, SetCollectionParams] = useState(new URLSearchParams(isLocation.search).get('collection') || '');
     const [Search, SetSearch] = useState('');
 
     const Filters = isLocation.search.substring(1);
-
-    useEffect(() => {
-        if (Search.length > 0) {
-            fetcher.load(`${isLocation.pathname}?filter=${Search}`)
-        } else {
-            fetcher.load(`${isLocation.pathname}?filter=`)
-        }
-    }, [Search])
 
     useEffect(() => {
         let Value = Filters.split("=")[1];
@@ -117,6 +109,14 @@ const Store = () => {
             SetSearch(Value)
         }
     }, [Filters])
+
+    useEffect(() => {
+        if (Search.length > 0) {
+            fetcher.load(`${isLocation.pathname}?filter=${Search}`)
+        } else {
+            fetcher.load(`${isLocation.pathname}?filter=`)
+        }
+    }, [Search, Filters])
 
     // Pagination configuration  
     const [endCursor, setEndCursor] = useState(null);

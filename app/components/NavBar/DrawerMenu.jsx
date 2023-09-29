@@ -43,24 +43,24 @@ const SideMenu = () => {
             return collections.map((e, i) => {
                 return (
                     <List key={i}>
-                        <ListItemText key={i}>
-                            <Link to={`/store?collection=${e.title}`}>
+                        <Link to={`/store?collection=${e.title}`}>
+                            <ListItemText key={i}>
                                 <Typography variant="h6" color={"text.secondary"}>
                                     {e.title}
                                 </Typography>
-                            </Link>
-                        </ListItemText>
+                            </ListItemText>
+                        </Link>
                         {e.products.map((item, index) => {
                             let RawId = item.id;
                             let ClearID = RawId.substring(RawId.lastIndexOf('/') + 1, RawId.length);
                             return (
-                                <ListItemButton key={index}>
-                                    <Link to={{
-                                        pathname: `/store/${ClearID}`
-                                    }}>
+                                <Link to={{
+                                    pathname: `/store/${ClearID}`
+                                }}>
+                                    <ListItemButton key={index}>
                                         <Typography color={"text.secondary"}>{item.title}</Typography>
-                                    </Link>
-                                </ListItemButton>
+                                    </ListItemButton>
+                                </Link>
                             )
                         })
                         }
