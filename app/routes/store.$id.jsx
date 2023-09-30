@@ -6,17 +6,6 @@ import { json } from '@shopify/remix-oxygen';
 import { GetDiscount } from '../utils';
 import { CartForm } from '@shopify/hydrogen';
 import { MediaFile, Money, ShopPayButton } from '@shopify/hydrogen-react';
-import { BuyNowButton } from '@shopify/hydrogen-react';
-
-function ProductBuyNowButton({ product }) {
-    const variantId = product.variants[0].id;
-
-    if (!variantId) {
-        return null;
-    }
-
-    return <BuyNowButton variantId={variantId} />;
-}
 
 export const meta = ({ data }) => {
     return [{ title: `Tienda | ${data.product.title}` }];
@@ -26,11 +15,9 @@ export async function loader({ params, request, context }) {
     const { id } = params;
     const { storefront } = context;
 
-    // const storeDomain = storefront.getShopifyDomain();
-
     let RawId = 'gid://shopify/Product/' + id;
 
-    const { product } = await storefront.query(PRODUCT_QUERY, {
+    const { shop, product } = await storefront.query(PRODUCT_QUERY, {
         variables: {
             ProductId: RawId,
         },
@@ -42,7 +29,7 @@ export async function loader({ params, request, context }) {
 
     return json({
         product,
-        // storeDomain
+        shop
     });
 }
 
@@ -107,9 +94,7 @@ function ClearProduct(data) {
 }
 
 const Store = () => {
-    const { product, storeDomain } = useLoaderData();
-
-    // const Orderable = product.availableForSale;
+    const { product, shop } = useLoaderData();
 
     const Variants = product.variants.nodes[0];
 
@@ -380,7 +365,11 @@ const Store = () => {
                             bgcolor={'black'}
                             alignItems={'center'}
                         >
-                            <Typography color={'white'}>Comprar Ahora</Typography>
+                            <ShopPayButton
+                                storeDomain={shop.primaryDomain.url}
+                                variantIds={[Variants?.id]}
+                                width={'400px'}
+                            />
                         </Stack>
                         <Stack
                             marginTop={2}
@@ -403,6 +392,11 @@ export default Store;
 
 const PRODUCT_QUERY = `#graphql
 query GetProductsById($ProductId: ID!) {
+    shop {
+        primaryDomain {
+          url
+        }
+      }
     product(id: $ProductId) {
       id
       title
@@ -411,6 +405,10 @@ query GetProductsById($ProductId: ID!) {
         nodes {
           url
         }
+      }
+      options {
+        name,
+        values
       }
       compareAtPriceRange {
         maxVariantPrice {
