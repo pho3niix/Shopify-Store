@@ -363,12 +363,11 @@ const Store = () => {
                             width={'100%'}
                             height={'40%'}
                             bgcolor={'black'}
-                            alignItems={'center'}
                         >
                             <ShopPayButton
                                 storeDomain={shop.primaryDomain.url}
                                 variantIds={[Variants?.id]}
-                                width={'400px'}
+                                width={'100%'}
                             />
                         </Stack>
                         <Stack
