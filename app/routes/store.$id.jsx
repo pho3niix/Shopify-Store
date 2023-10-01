@@ -188,8 +188,8 @@ const Store = () => {
                 >
                     <Box
                         height={{
-                            xs: '30vh',
-                            sm: '40vh',
+                            xs: '20vh',
+                            sm: '35vh',
                             md: '50vh',
                             lg: '60vh',
                             xl: '80vh'
