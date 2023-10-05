@@ -177,7 +177,6 @@ const Contact = () => {
         alignItems={"center"}
         width={"100%"}
         height={"100vh"}
-        marginBottom={{ xs: "-24px", md: "-24px" }}
         sx={{
           // border: "1px solid red",
           backgroundColor: "#202123",

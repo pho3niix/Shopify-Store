@@ -275,7 +275,6 @@ const Services = () => {
             justifyContent={"center"}
             spacing={1}
             marginTop={2}
-            marginBottom={-3}
           >
             <Stack
               width={"50px"}

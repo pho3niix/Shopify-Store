@@ -209,15 +209,15 @@ const Store = () => {
                             lg: '50vh',
                             xl: '80vh'
                         }}
-                        bgcolor={'brown'}
                     >
                         <Box
+                            className='MainImage'
                             component="img"
-                            src={Image}
                             sx={{
-                                objectFit: 'fill',
-                                boxShadow: '0px 5px 5px 0px rgba(163,163,163,0.75)',
+                                boxShadow: '0px 5px 5px 0px rgba(163, 163, 163, 0.75)',
+                                objectFit: 'fill'
                             }}
+                            src={Image}
                         ></Box>
                     </Stack>
                     <Stack

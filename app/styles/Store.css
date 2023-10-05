@@ -23,6 +23,7 @@
     flex-direction: row !important;
     width: 85%;
     justify-content: space-evenly;
+    margin-bottom: 24px;
 }
 
 .PaginationElement {
