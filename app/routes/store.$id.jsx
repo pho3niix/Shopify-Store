@@ -6,6 +6,21 @@ import { json } from '@shopify/remix-oxygen';
 import { GetDiscount } from '../utils';
 import { CartForm } from '@shopify/hydrogen';
 import { MediaFile, Money, ShopPayButton } from '@shopify/hydrogen-react';
+import { BuyNowButton, CartProvider } from '@shopify/hydrogen-react';
+import { Link } from 'react-router-dom';
+
+function ProductBuyNowButton({ product, action }) {
+    const variantId = product;
+    if (!variantId) {
+        return null;
+    }
+    let ClearID = product.substring(product.lastIndexOf('/') + 1, product.length);
+    return (
+        <form action={`https://obinteriorismo.myshopify.com/cart/${ClearID}:1?payment=shop_pay`}>
+            <input className="BuyNow" type="submit" value={'Comprar ahora'} />
+        </form>
+    );
+}
 
 export const meta = ({ data }) => {
     return [{ title: `Tienda | ${data.product.title}` }];
@@ -169,13 +184,13 @@ const Store = () => {
                 }}
                 width={'80%'}
                 height={{
-                    lg: '100vh',
+                    lg: '75vh',
                     xl: '75vh'
                 }}
             >
                 <Stack
                     display={'flex'}
-                    height={'100%'}
+                    height={'97.5%'}
                     direction={'column'}
                     justifyContent={'space-between'}
                     width={{
@@ -186,22 +201,25 @@ const Store = () => {
                         xl: 1200
                     }}
                 >
-                    <Box
+                    <Stack
                         height={{
                             xs: '20vh',
                             sm: '35vh',
-                            md: '50vh',
-                            lg: '60vh',
+                            md: '40vh',
+                            lg: '50vh',
                             xl: '80vh'
                         }}
-                        component="img"
-                        src={Image}
-                        width={{ xs: '100%', sm: '100%', md: '100%' }}
-                        sx={{
-                            objectFit: 'fill',
-                            boxShadow: '0px 5px 5px 0px rgba(163,163,163,0.75)',
-                        }}
-                    ></Box>
+                        bgcolor={'brown'}
+                    >
+                        <Box
+                            component="img"
+                            src={Image}
+                            sx={{
+                                objectFit: 'fill',
+                                boxShadow: '0px 5px 5px 0px rgba(163,163,163,0.75)',
+                            }}
+                        ></Box>
+                    </Stack>
                     <Stack
                         display={{
                             xs: 'none',
@@ -211,7 +229,6 @@ const Store = () => {
                             xl: 'flex'
                         }}
                         direction={'row'}
-                        height={'20vh'}
                         justifyContent={'space-between'}
                         className="ImagesList"
                         marginTop={'2vh'}
@@ -358,16 +375,15 @@ const Store = () => {
                         justifyContent={'start'}
                     >
                         <Stack
-                            display={'flex'}
-                            justifyContent={'center'}
                             width={'100%'}
                             height={'40%'}
                             bgcolor={'black'}
+                            color={'white'}
+                            position={'relative'}
                         >
-                            <ShopPayButton
-                                storeDomain={shop.primaryDomain.url}
-                                variantIds={[Variants?.id]}
-                                width={'100%'}
+                            <ProductBuyNowButton
+                                product={Variants?.id}
+                                action={shop.primaryDomain.url}
                             />
                         </Stack>
                         <Stack

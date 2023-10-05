@@ -55,6 +55,17 @@
     position: absolute;
 }
 
+.BuyNow {
+    background-color: #000000;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
 .NavButton {
     padding: 10px;
     background-color: black;
