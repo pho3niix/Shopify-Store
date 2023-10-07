@@ -166,7 +166,7 @@ function CartLineQuantity({ line }) {
             justifyContent={'space-between'}
             marginRight={2}
             height={'100%'}
-            className="Up-Quantity"
+            borderRadius={'5px'}
             bgcolor={'#e9e9ed'}
             alignItems={'center'}
         >

@@ -8,20 +8,16 @@
     font-size: 18px;
 }
 
-.Cart-Total {
-    font-size: 15px;
-}
-
 .Cart-Title:hover {
     color: rgb(103, 103, 103)
 }
 
-.Cart-Image:hover {
-    opacity: .8;
+.Cart-Total {
+    font-size: 15px;
 }
 
-.Up-Quantity {
-    border-radius: 5px;
+.Cart-Image:hover {
+    opacity: .8;
 }
 
 .QuantityModifiers {

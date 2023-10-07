@@ -90,6 +90,7 @@ const AboutUs = () => {
         height={"100%"}
         display={"flex"}
         alignItems={"center"}
+        paddingBottom={'24px'}
       // sx={{ border: "1px solid black" }}
       >
         {/* Section: 1 */}

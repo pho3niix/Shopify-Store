@@ -167,8 +167,17 @@ const Store = () => {
 
     return (
         <Layout>
-            <Stack className="main">
-                <Stack className="search">
+            <Stack
+                display={"flex"}
+                alignItems={"center"}
+                width={"100%"}
+                minHeight={"75vh"}
+            >
+                <Stack
+                    component={"div"}
+                    className="search"
+                    width={"85%"}
+                >
                     <TextField
                         id="item"
                         label="Escriba el nombre de un producto..."
@@ -188,18 +197,29 @@ const Store = () => {
                     />
                 </Stack>
                 <Stack
-                    className="StoreList"
+                    component={"section"}
+                    display={"flex"}
+                    flexDirection={"row"}
+                    flexWrap={"wrap"}
+                    width={"85%"}
+                    minHeight={"75vh"}
+                    position={"relative"}
                 >
                     <List Items={Items} />
                 </Stack>
                 <Stack
-                    className='PaginationComponent'
+                    component={"section"}
+                    display={"flex"}
+                    flexDirection={"row"}
+                    width={"85%"}
+                    justifyContent={"space-evenly"}
+                    marginBottom={"24px"}
                 >
                     <input type="button" value={"Anterior"} className={hasPreviousPage ? 'NavButton' : 'DisableButton'} disabled={!hasPreviousPage} onClick={onPrevPage} />
                     <input type="button" value={"Siguiente"} className={hasNextPage ? 'NavButton' : 'DisableButton'} disabled={!hasNextPage} onClick={onNextPage} />
                 </Stack>
             </Stack>
-        </Layout>
+        </Layout >
     );
 };
 

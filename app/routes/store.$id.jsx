@@ -187,6 +187,7 @@ const Store = () => {
                     lg: '75vh',
                     xl: '75vh'
                 }}
+                paddingBottom={'24px'}
             >
                 <Stack
                     display={'flex'}
