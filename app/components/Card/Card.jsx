@@ -11,11 +11,6 @@ function ProductForm({productId, isHovered}) {
 
   return (
     <CartForm route="/cart" action={CartForm.ACTIONS.LinesAdd} inputs={{lines}}>
-      {/* <input
-        type="submit"
-        className="AddToCartL"
-        value={'Agregar al carrito'}
-      /> */}
       <Button
         variant="contained"
         sx={{
@@ -35,7 +30,7 @@ function ProductForm({productId, isHovered}) {
           variant="h4"
           color={'#fff'}
           fontSize={{
-            lg: '0.8rem',
+            lg: '0.7rem',
           }}
         >
           Agregar al carrito
@@ -53,12 +48,6 @@ function AddShoppingCart(data) {
 export default function CardComponent({children}) {
   const [isHovered, setIsHovered] = useState(false);
   return (
-    //  <Stack
-    //         border={'1px solid red'}
-    //         width={{md: '25%'}}
-    //         height={{md: '45%'}}
-    //         mr={'7%'}
-    //       >
     <Stack
       //   border={'1px solid black'}
       width={{md: '20%'}}
@@ -96,7 +85,6 @@ export default function CardComponent({children}) {
             }}
           >
             <Box
-              //   className="ItemImage"
               width={'100%'}
               height={'100%'}
               component="img"
@@ -121,7 +109,6 @@ export default function CardComponent({children}) {
         >
           {' '}
           <Typography
-            //   className="ItemName"
             textAlign={'center'}
             variant="h1"
             color={'#333'}
@@ -169,92 +156,6 @@ export default function CardComponent({children}) {
           </Typography>
         </Stack>
       </Stack>
-      {/* <Stack
-        position={'relative'}
-        display={'flex'}
-        direction={'column'}
-        alignItems={'center'}
-        justifyContent={'center'}
-        border={'1px solid red'}
-        width={'100%'}
-        height={'80%'}
-      >
-        <Link
-          to={{
-            pathname: `/store/${children.id}`,
-          }}
-        >
-          <Box
-            className="ItemImage"
-            width={'100%'}
-            component="img"
-            alt={children.name}
-            src={children.image}
-            sx={{
-              objectFit: 'fill',
-            }}
-          />
-        </Link> */}
-      {/* <ProductForm productId={children?.variant} /> */}
-      {/* <ProductForm productId={children?.variant} isHovered={isHovered} /> */}
-      {/* </Stack> */}
-      {/* <Stack
-        display={'flex'}
-        direction={'column'}
-        width={'100%'}
-        height={'20%'}
-        // border={'1px solid blue'}
-        justifyContent={'center'}
-        spacing={1}
-      >
-        <Typography
-          //   className="ItemName"
-          textAlign={'center'}
-          variant="h1"
-          color={'#333'}
-          fontSize={{
-            lg: '1.2rem',
-          }}
-        >
-          {children.nombre}
-        </Typography>
-        <Stack
-          display={'flex'}
-          direction={'row'}
-          justifyContent={'center'}
-          spacing={1}
-        >
-          <Typography
-            variant="h2"
-            color={'#333'}
-            fontSize={{
-              lg: '1rem',
-            }}
-          >
-            ${children.precio_final} MXN
-          </Typography>
-          <Typography
-            variant="h2"
-            color={'#C32F27'}
-            fontSize={{
-              lg: '1rem',
-            }}
-          >
-            -{children.descuento}%
-          </Typography>
-        </Stack>
-        <Typography
-          variant="h4"
-          color={'#C5C5C5'}
-          textAlign={'center'}
-          fontSize={{
-            lg: '0.8rem',
-          }}
-          sx={{textDecoration: 'line-through'}}
-        >
-          ${children.precio_real} MXN
-        </Typography>
-      </Stack> */}
     </Stack>
   );
 }

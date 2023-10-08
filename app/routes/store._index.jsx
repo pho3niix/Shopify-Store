@@ -97,7 +97,11 @@ function List({Items}) {
       return <Card key={i}>{e}</Card>;
     });
   } else {
-    return <Typography mt={3}>No hay productos para mostrar.</Typography>;
+    return (
+      <Typography mt={3} ml={'3%'}>
+        No hay productos para mostrar.
+      </Typography>
+    );
   }
 }
 
