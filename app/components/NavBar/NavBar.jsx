@@ -63,7 +63,13 @@ const NavBar = () => {
 
     return (
         <AppBar component={'nav'} className="AppBar">
-            <Toolbar className="ToolBar">
+            {/* Nav Section Web-view */}
+            <Toolbar
+                className="ToolBar"
+                sx={{
+                    display: { xs: "none", sm: 'none', md: 'flex', lg: 'flex', xl: 'flex' }
+                }}
+            >
                 <Stack spacing={1} direction="row" className="leftContainer">
                     <Stack
                         display={'flex'}
@@ -109,18 +115,63 @@ const NavBar = () => {
                             </Link>
                         </ListItemButton>
                         <ListItemButton sx={{ justifyContent: 'center' }}>
-                            <Suspense >
-                                <Await resolve={cart}>
-                                    {(data) => {
-                                        return (
-                                            <Badge badgeContent={data?.totalQuantity || 0} color="shoppingCar">
-                                                <ShoppingCart data={data} isOpen={isOpen} onClick={openDrawer} onClose={closeDrawer} openAlert={openAlert} />
-                                            </Badge>);
-                                    }}
-                                </Await>
-                            </Suspense>
+                            <Await resolve={cart}>
+                                {(data) => {
+                                    return (
+                                        <Badge badgeContent={data?.totalQuantity || 0} color="shoppingCar">
+                                            <ShoppingCart data={data} isOpen={isOpen} onClick={openDrawer} onClose={closeDrawer} openAlert={openAlert} />
+                                        </Badge>);
+                                }}
+                            </Await>
                         </ListItemButton>
                     </List>
+                </Stack>
+            </Toolbar>
+            {/* Nav Section Mobile-view */}
+            <Toolbar
+                sx={{
+                    display: { xs: 'flex', sm: 'flex', md: 'none', lg: 'none', xl: 'none' },
+                    width: '100%'
+                }}
+            >
+                <Stack
+                    direction="row"
+                    display={'flex'}
+                    width={'100%'}
+                    justifyContent={'space-between'}
+                >
+                    <Stack
+                        display={'flex'}
+                        alignItems={'center'}
+                        justifyContent={'center'}
+                    >
+                        <SideMenu />
+                    </Stack>
+                    <Stack
+                        display={'flex'}
+                        flexDirection={'row'}
+                        alignItems={'center'}
+                    >
+                        <Link to="/">
+                            <IconButton>
+                                <Box component="img" src={logo} width={'50px'} height={'60px'} />
+                                <Box component="img" src={logo_text} width={'100px'} height={'auto'} />
+                            </IconButton>
+                        </Link>
+                    </Stack>
+                    <Stack
+                        display={'flex'}
+                        justifyContent={'center'}
+                    >
+                        <Await resolve={cart}>
+                            {(data) => {
+                                return (
+                                    <Badge badgeContent={data?.totalQuantity || 0} color="shoppingCar">
+                                        <ShoppingCart data={data} isOpen={isOpen} onClick={openDrawer} onClose={closeDrawer} openAlert={openAlert} />
+                                    </Badge>);
+                            }}
+                        </Await>
+                    </Stack>
                 </Stack>
             </Toolbar>
         </AppBar>

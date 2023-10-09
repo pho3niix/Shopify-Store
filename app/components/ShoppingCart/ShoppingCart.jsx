@@ -44,7 +44,10 @@ function LineItem({ lineItem }) {
                 direction={'column'}
                 alignItems={'start'}
                 justifyContent={'space-between'}
-                width={'70%'}
+                width={{
+                    xs: '55%',
+                    md: '70%'
+                }}
             >
                 <Link
                     to={`/store/${ClearID}`}
@@ -56,7 +59,10 @@ function LineItem({ lineItem }) {
                 <Stack
                     display={'flex'}
                     direction={'row'}
-                    width={'50%'}
+                    width={{
+                        xs: '70%',
+                        md: '50%'
+                    }}
                     alignItems={'center'}
                 >
                     <CartLineQuantity line={lineItem} />

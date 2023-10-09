@@ -50,7 +50,14 @@ const CartDrawer = ({ data, isOpen, onClose, onClick, openAlert }) => {
                 open={isOpen}
                 onClose={onClose}
             >
-                <Box color={"black"} width={450} textAlign={"left"}>
+                <Box
+                    color={"black"}
+                    width={{
+                        xs: '20em',
+                        md: 450
+                    }}
+                    textAlign={"left"}
+                >
                     <Stack
                         padding={3}
                     >
@@ -67,7 +74,6 @@ const CartDrawer = ({ data, isOpen, onClose, onClick, openAlert }) => {
                         >
                             <Stack
                                 padding={3}
-                                overflowY={'scroll'}
                             >
                                 <CartLineItems linesObj={data.lines} />
                             </Stack>

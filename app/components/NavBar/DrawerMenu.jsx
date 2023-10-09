@@ -7,6 +7,7 @@ import {
     List,
     ListItemText,
     ListItemButton,
+    Stack
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
@@ -29,6 +30,78 @@ function ClearCollections(collections = []) {
     })
 }
 
+function ListCollections({ collections }) {
+    if (collections.length > 0) {
+        return collections.map((e, i) => {
+            return (
+                <List key={i}>
+                    <Link key={i} to={`/store?collection=${e.title}`}>
+                        <ListItemText key={i}>
+                            <Typography variant="h6" color={"text.secondary"}>
+                                {e.title}
+                            </Typography>
+                        </ListItemText>
+                    </Link>
+                    {e.products.map((item, index) => {
+                        let RawId = item.id;
+                        let ClearID = RawId.substring(RawId.lastIndexOf('/') + 1, RawId.length);
+                        return (
+                            <Link key={index} to={{
+                                pathname: `/store/${ClearID}`
+                            }}>
+                                <ListItemButton key={index}>
+                                    <Typography key={index} color={"text.secondary"}>{item.title}</Typography>
+                                </ListItemButton>
+                            </Link>
+                        )
+                    })
+                    }
+                </List >
+            )
+        })
+    } else {
+        return <Typography>Sin información para mostrar.</Typography>
+    }
+}
+function ListNavigation() {
+    const Navigation = [
+        {
+            route: '/',
+            title: 'Inicio',
+        },
+        {
+            route: '/services',
+            title: 'Servicios',
+        },
+        {
+            route: '/store',
+            title: 'Tienda',
+        },
+        {
+            route: '/about',
+            title: 'Conócenos',
+        },
+        {
+            route: '/contact',
+            title: 'Contacto',
+        }
+    ]
+
+    return (
+        <List>
+            {Navigation.map((e, i) => {
+                return (
+                    <Link key={i} to={e.route}>
+                        <ListItemButton key={i}>
+                            <Typography key={i} color={"text.secondary"}>{e.title}</Typography>
+                        </ListItemButton>
+                    </Link>
+                )
+            })}
+        </List>
+    )
+}
+
 const SideMenu = () => {
     const [openDrawer, setOpenDrawer] = useState(false);
 
@@ -37,40 +110,6 @@ const SideMenu = () => {
     const { collections } = root.data?.collections;
 
     const CleanCollections = ClearCollections(collections.edges);
-
-    function ListCollections(collections = []) {
-        if (collections.length > 0) {
-            return collections.map((e, i) => {
-                return (
-                    <List key={i}>
-                        <Link key={i} to={`/store?collection=${e.title}`}>
-                            <ListItemText key={i}>
-                                <Typography variant="h6" color={"text.secondary"}>
-                                    {e.title}
-                                </Typography>
-                            </ListItemText>
-                        </Link>
-                        {e.products.map((item, index) => {
-                            let RawId = item.id;
-                            let ClearID = RawId.substring(RawId.lastIndexOf('/') + 1, RawId.length);
-                            return (
-                                <Link key={index} to={{
-                                    pathname: `/store/${ClearID}`
-                                }}>
-                                    <ListItemButton key={index}>
-                                        <Typography key={index} color={"text.secondary"}>{item.title}</Typography>
-                                    </ListItemButton>
-                                </Link>
-                            )
-                        })
-                        }
-                    </List >
-                )
-            })
-        } else {
-            return <Typography>Sin información para mostrar.</Typography>
-        }
-    }
 
     return (
         <>
@@ -88,8 +127,37 @@ const SideMenu = () => {
                 open={openDrawer}
                 onClose={() => setOpenDrawer(false)}
             >
-                <Box p={3} width={450} textAlign={"left"}>
-                    {ListCollections(CleanCollections)}
+                <Box
+                    p={3}
+                    width={{
+                        xs: '20rem',
+                        md: 450
+                    }}
+                    textAlign={"left"}
+                >
+                    {/* Collections view */}
+                    <Stack
+                        display={{
+                            xs: "none",
+                            sm: 'none',
+                            md: 'flex',
+                            lg: 'flex',
+                            xl: 'flex'
+                        }}
+                    >
+                        <ListCollections collections={CleanCollections} />
+                    </Stack>
+                    <Stack
+                        display={{
+                            xs: "flex",
+                            sm: 'flex',
+                            md: 'none',
+                            lg: 'none',
+                            xl: 'none'
+                        }}
+                    >
+                        <ListNavigation />
+                    </Stack>
                 </Box>
             </Drawer>
         </>
