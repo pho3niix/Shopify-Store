@@ -56,7 +56,7 @@ const CartDrawer = ({ data, isOpen, onClose, onClick, openAlert }) => {
                     >
                         <h2>Carrito</h2>
                     </Stack>
-                    <MAlert className="Cart-Alert" onClose={false} severity="success" sx={{ width: '100%', display: openAlert ? 'flex' : 'none', marginBottom: 1 }}>
+                    <MAlert className="Cart-Alert" severity="success" sx={{ width: '100%', display: openAlert ? 'flex' : 'none', marginBottom: 1 }}>
                         Producto agregado con éxito.
                     </MAlert>
                     {data?.totalQuantity > 0 ? (
