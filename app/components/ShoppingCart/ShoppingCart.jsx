@@ -86,11 +86,11 @@ export function CartSummary({ cost }) {
                 width={'85%'}
                 justifyContent={'space-between'}
             >
-                <Typography>
+                <Typography className="General-Text">
                     Subtotal
                 </Typography>
                 {cost?.subtotalAmount?.amount ? (
-                    <Money data={cost?.subtotalAmount} />
+                    <Money className="General-Text" data={cost?.subtotalAmount} />
                 ) : (
                     '-'
                 )}
@@ -107,7 +107,7 @@ export function CartActions({ checkoutUrl }) {
             display={'flex'}
             alignItems={'center'}
             justifyContent={'center'}
-            bgcolor={'#5655ef'}
+            bgcolor={'#202123'}
             width={'70%'}
             height={'4vh'}
             borderRadius={'5px'}

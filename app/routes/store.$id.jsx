@@ -294,11 +294,11 @@ const Store = () => {
                                         marginLeft: 1,
                                         marginRight: 1,
                                     }}
-                                    color={'#c32f27'}
+                                    color={'#C32F27'}
                                 >
                                     -{ProductData.descuento}%
                                 </Typography>
-                                <Typography className="PriceTag" color={'#c32f27'}>
+                                <Typography className="PriceTag" color={'#C32F27'}>
                                     ${ProductData.precio_final} MXN
                                 </Typography>
                             </Stack>

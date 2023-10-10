@@ -10,7 +10,7 @@
 }
 
 .BuyNow {
-    background-color: #000000;
+    background-color: #202123;
     border: none;
     color: white;
     font-size: 16px;
@@ -22,7 +22,7 @@
 
 .NavButton {
     padding: 10px;
-    background-color: black;
+    background-color: #202123;
     border: none;
     color: white;
     cursor: pointer;
@@ -36,7 +36,7 @@
 .DisableButton {
     padding: 10px;
     border-radius: 5px;
-    background-color: black;
+    background-color: #202123;
     opacity: .5;
     border: none;
     color: white;

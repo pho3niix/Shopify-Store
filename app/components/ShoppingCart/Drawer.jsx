@@ -61,7 +61,7 @@ const CartDrawer = ({ data, isOpen, onClose, onClick, openAlert }) => {
                     <Stack
                         padding={3}
                     >
-                        <h2>Carrito</h2>
+                        <h2 className="General-Text">Carrito de compras</h2>
                     </Stack>
                     <MAlert className="Cart-Alert" severity="success" sx={{ width: '100%', display: openAlert ? 'flex' : 'none', marginBottom: 1 }}>
                         Producto agregado con éxito.
@@ -95,7 +95,7 @@ const CartDrawer = ({ data, isOpen, onClose, onClick, openAlert }) => {
                         </Stack>
                     ) : (
                         <Stack padding={3}>
-                            <Typography>
+                            <Typography className="General-Text">
                                 Su carrito está actualmente vacío.
                             </Typography>
                             <Stack marginTop={2}>
