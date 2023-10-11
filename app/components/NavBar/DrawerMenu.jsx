@@ -93,7 +93,7 @@ function ListNavigation() {
                 return (
                     <Link key={i} to={e.route}>
                         <ListItemButton key={i}>
-                            <Typography key={i} color={"text.secondary"}>{e.title}</Typography>
+                            <Typography key={i} className={"General-Text"}>{e.title}</Typography>
                         </ListItemButton>
                     </Link>
                 )

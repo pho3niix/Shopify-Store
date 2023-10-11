@@ -108,6 +108,60 @@ function ClearProduct(data) {
     };
 }
 
+function GetColors(colors = []) {
+    if (colors.length == 0) {
+        return <p> Sin colores añadidos.</p>;
+    } else {
+        return colors.map((item, index) => {
+            return (
+                <span
+                    style={{
+                        backgroundColor: item,
+                        width: '30px',
+                        height: '30px',
+                        listStyleType: 'none',
+                        borderRadius: '100%',
+                        marginRight: '5px',
+                        border: '1px solid black',
+                    }}
+                    key={index}
+                ></span>
+            );
+        });
+    }
+}
+
+function ListImage(images = []) {
+    let Containers = [];
+
+    for (let i = 1; i < 4; i++) {
+        let source = images[i];
+        if (i == 1) {
+            Containers.push(
+                <Stack
+                    marginRight={{ xs: '1%', sm: '1%', md: '1%' }}
+                    maxHeight={'160px'}
+                    key={i}
+                >
+                    <Box width={'100%'} component="img" src={source} />
+                </Stack>,
+            );
+        } else {
+            Containers.push(
+                <Stack
+                    marginLeft={{ xs: '1%', sm: '1%', md: '1%' }}
+                    maxHeight={'160px'}
+                    key={i}
+                >
+                    <Box width={'100%'} component="img" src={source} />
+                </Stack>,
+            );
+        }
+    }
+
+    return Containers;
+}
+
 const Store = () => {
     const { product, shop } = useLoaderData();
 
@@ -115,61 +169,7 @@ const Store = () => {
 
     const ProductData = ClearProduct(product);
 
-    function GetColors(colors = []) {
-        if (colors.length == 0) {
-            return <p> Sin colores añadidos.</p>;
-        } else {
-            return colors.map((item, index) => {
-                return (
-                    <span
-                        style={{
-                            backgroundColor: item,
-                            width: '30px',
-                            height: '30px',
-                            listStyleType: 'none',
-                            borderRadius: '100%',
-                            marginRight: '5px',
-                            border: '1px solid black',
-                        }}
-                        key={index}
-                    ></span>
-                );
-            });
-        }
-    }
-
     const Image = ProductData.imagenes[0];
-
-    function ListImage(images = []) {
-        let Containers = [];
-
-        for (let i = 1; i < 4; i++) {
-            let source = images[i];
-            if (i == 1) {
-                Containers.push(
-                    <Stack
-                        marginRight={{ xs: '1%', sm: '1%', md: '1%' }}
-                        maxHeight={'160px'}
-                        key={i}
-                    >
-                        <Box width={'100%'} component="img" src={source} />
-                    </Stack>,
-                );
-            } else {
-                Containers.push(
-                    <Stack
-                        marginLeft={{ xs: '1%', sm: '1%', md: '1%' }}
-                        maxHeight={'160px'}
-                        key={i}
-                    >
-                        <Box width={'100%'} component="img" src={source} />
-                    </Stack>,
-                );
-            }
-        }
-
-        return Containers;
-    }
 
     return (
         <Layout>
