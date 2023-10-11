@@ -231,7 +231,8 @@ const Store = () => {
           justifyContent={'space-between'}
           //   paddingBottom={'24px'}
         >
-          <Stack
+          {/* AQUÍ AQUÍ AQUÍ --- INICIO */}
+          {/* <Stack
             //   border={'1px solid red'}
             width={'59%'}
             height={'100%'}
@@ -256,8 +257,9 @@ const Store = () => {
                 height={'69%'}
               ></Stack>
             </Stack>
-          </Stack>
-          {/* <Stack
+          </Stack> */}
+          {/* AQUÍ AQUÍ AQUÍ --- FINAL */}
+          <Stack
             display={'flex'}
             height={'97.5%'}
             direction={'column'}
@@ -304,8 +306,8 @@ const Store = () => {
             >
               {ListImage(ProductData.imagenes)}
             </Stack>
-          </Stack> */}
-          {/* <Stack
+          </Stack>
+          <Stack
             display={'flex'}
             marginLeft={{
               lg: 4,
@@ -454,7 +456,6 @@ const Store = () => {
               height={'20vh'}
               //   justifyContent={'start'}
             >
-
               <Stack width={'100%'} height={'40%'} position={'relative'}>
                 <ProductBuyNowButton
                   product={Variants?.id}
@@ -472,8 +473,7 @@ const Store = () => {
                 <ProductForm productId={Variants?.id} />
               </Stack>
             </Stack>
-          </Stack> 
-          */}
+          </Stack>
         </Stack>
       </Fade>
     </Layout>

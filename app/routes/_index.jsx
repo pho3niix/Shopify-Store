@@ -35,7 +35,7 @@ const Home = () => {
 
   return (
     <Layout>
-      <Fade in={true} timeout={1000}>
+      <Fade in={true} timeout={1000} mountOnEnter={true}>
         <Stack className="embla" ref={emblaRef}>
           <div className="embla__container">{ListImage(4)}</div>
         </Stack>
