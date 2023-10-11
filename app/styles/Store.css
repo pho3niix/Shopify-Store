@@ -46,3 +46,11 @@
 .DisableButton:hover {
     cursor: not-allowed;
 }
+
+.Image-Detail {
+    transition: .2s;
+}
+
+.Image-Detail:hover {
+    opacity: .8;
+}
