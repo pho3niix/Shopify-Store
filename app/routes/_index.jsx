@@ -1,17 +1,17 @@
-import React from "react";
-import NavBar from "../components/NavBar/NavBar";
-import Footer from "../components/Footer/Footer";
-import Layout from "../components/Layout/Layout";
-import { Stack, Box } from "@mui/material";
-import useEmblaCarousel from 'embla-carousel-react'
-import Autoplay from 'embla-carousel-autoplay'
+import React from 'react';
+import NavBar from '../components/NavBar/NavBar';
+import Footer from '../components/Footer/Footer';
+import Layout from '../components/Layout/Layout';
+import {Stack, Box, Fade} from '@mui/material';
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
 
 export const meta = () => {
-  return [{ title: 'Inicio' }];
+  return [{title: 'Inicio'}];
 };
 
 const Home = () => {
-  const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay()])
+  const [emblaRef] = useEmblaCarousel({loop: true}, [Autoplay()]);
 
   function ListImage(number) {
     let Images = [];
@@ -24,22 +24,22 @@ const Home = () => {
           sx={{
             backgroundImage: `url(${source})`,
             backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat'
+            backgroundRepeat: 'no-repeat',
           }}
           key={i}
-        />
-      )
+        />,
+      );
     }
-    return (Images)
+    return Images;
   }
 
   return (
     <Layout>
-      <Stack className="embla" ref={emblaRef}>
-        <div className="embla__container">
-          {ListImage(4)}
-        </div>
-      </Stack>
+      <Fade in={true} timeout={1000}>
+        <Stack className="embla" ref={emblaRef}>
+          <div className="embla__container">{ListImage(4)}</div>
+        </Stack>
+      </Fade>
     </Layout>
   );
 };
